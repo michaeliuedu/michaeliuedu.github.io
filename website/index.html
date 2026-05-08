@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="michael liu's personal website" />
+    <title>michael liu</title>
+    <link rel="icon" type="image/gif" href="assets/cs.gif" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-logo" href="#home">michael liu</a>
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="site-nav"
+        >
+          <span class="nav-toggle__bar" aria-hidden="true"></span>
+          <span class="visually-hidden">Menu</span>
+        </button>
+        <nav class="site-nav" id="site-nav" aria-label="Primary">
+          <ul>
+            <li><a href="#home" aria-current="page">home</a></li>
+            <li><a href="#projects">projects</a></li>
+            <li><a href="#news">news</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="home" aria-labelledby="hero-title">
+        <div class="hero__grid">
+          <div class="hero__photo">
+            <div class="avatar">
+              <img
+                class="avatar__image"
+                src="assets/me.png"
+                width="320"
+                height="320"
+                alt="Michael Liu"
+              />
+            </div>
+          </div>
+          <div class="hero__intro">
+            <h1 id="hero-title" class="hero__name">michael liu</h1>
+            <ul class="hero__meta">
+              <li>
+                <b>studying:</b> computer science @ carnegie mellon university
+              </li>
+              <li><b>location:</b> pittsburgh, pa [from dallas, tx]</li>
+              <li><b>email:</b> mhliu [at] andrew {dot} cmu {dot} edu</li>
+            </ul>
+            <ul class="social" aria-label="Social profiles">
+              <li>
+                <a
+                  class="social__link"
+                  href="https://www.linkedin.com/in/michaelhongyiliu"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  aria-label="LinkedIn"
+                >
+                  <svg
+                    class="social__icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+                    />
+                  </svg>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="social__link"
+                  href="https://github.com/michaeliuedu"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  aria-label="GitHub"
+                >
+                  <svg
+                    class="social__icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"
+                    />
+                  </svg>
+                </a>
+              </li>
+              <li>
+                <a class="social__link" href="mailto:mhliu@andrew.cmu.edu" aria-label="Email">
+                  <svg
+                    class="social__icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <rect width="20" height="16" x="2" y="4" rx="2" />
+                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                  </svg>
+                </a>
+              </li>
+            </ul>
+
+          </div>
+          <aside class="hero__aside" aria-labelledby="interests-heading">
+            <h2 id="interests-heading" class="aside-heading">interests</h2>
+            <ul class="interest-list">
+              <li>machine learning  &amp; reinforcement learning</li>
+              <li>autonomous systems</li>
+              <li>mobile development &amp; web development</li>
+              <li>computer systems</li>
+            </ul>
+          </aside>
+        </div>
+      </section>
+
+      <div class="content-wrap">
+        <section class="section" id="about" aria-labelledby="about-heading">
+          <h2 id="about-heading" class="section__title">about me</h2>
+          <div class="section__body">
+            <p>
+              i am an undergraduate studying computer science at
+              <strong>carnegie mellon university</strong>. i care
+              about studying computer systems and building autonomous systems.
+              outside of computer science, i fenced competitively for nine years, 
+              enjoy spending time with friends and family, and embark on projects that challenge me.
+            </p>
+
+            <p>
+              i am currently pursuing research in the robotics department and working as a web developer
+              for <a href="https://scottylabs.org" target="_blank" rel="noopener noreferrer"><strong>scottylabs</strong></a> as part of the tech team for <a href="https://cmueats.com" target="_blank" rel="noopener noreferrer"><strong>cmueats.com</strong></a>.
+         
+         
+            </p>
+          </div>
+        </section>
+
+        <section class="section section--projects" id="projects" aria-labelledby="projects-heading">
+          <h2 id="projects-heading" class="section__title">selected projects</h2>
+          <div class="section__body">
+            <p class="projects-intro">
+              these are some of my projects and research pursuits so far.
+            </p>
+          </div>
+
+          <ul class="project-showcase">
+            <li>
+              <article class="project-card">
+                <!-- Media: assets/projects/pagerank.gif (replace file to update animation) -->
+                <div class="project-card__media">
+                  <img
+                    class="project-card__image"
+                    src="assets/projects/pagerank.gif"
+                    width="640"
+                    height="416"
+                    alt="pagerank and hits demo: graph and bar chart"
+                  />
+                </div>
+                <div class="project-card__body">
+                  <h3 class="project-card__title">
+                    Exploration and Implementation of Web Page Ranking Algorithms: PageRank,
+                    HITS, and Personalized PageRank
+                  </h3>
+                  <ul class="project-card__tags">
+                    <li><span class="project-tag">Python</span></li>
+                    <li><span class="project-tag">linear algebra</span></li>
+                    <li><span class="project-tag">PageRank</span></li>
+                    <li><span class="project-tag">HITS</span></li>
+                    <li><span class="project-tag">Personalized PageRank</span></li>
+                  </ul>
+                  <p class="project-card__desc">
+                    exploration of the linear algebra concepts behind the pagerank and hits
+                    algorithm, their implementation in python, and further extensions involved
+                    personalized pagerank
+                  </p>
+                  <div class="project-card__links">
+                    <a
+                      class="project-pill"
+                      href="https://github.com/michaeliuedu/pagerank-hits"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      >github</a
+                    >
+                  </div>
+                </div>
+              </article>
+            </li>
+            <li>
+              <article class="project-card">
+                <!-- Media: assets/projects/autonomous-driving.png -->
+                <div class="project-card__media">
+                  <img
+                    class="project-card__image"
+                    src="assets/projects/autonomous-driving.png"
+                    width="640"
+                    height="416"
+                    alt="research poster: autonomous vehicle control with sac and imitation learning"
+                  />
+                </div>
+                <div class="project-card__body">
+                  <h3 class="project-card__title">
+                    Autonomous Vehicle Control: Imitation Learning and Soft Actor-Critic Integration
+                    for Enhanced Performance
+                  </h3>
+                  <ul class="project-card__tags">
+                    <li><span class="project-tag">imitation learning</span></li>
+                    <li><span class="project-tag">soft actor–critic</span></li>
+                    <li><span class="project-tag">reinforcement learning</span></li>
+                    <li><span class="project-tag">Python</span></li>
+                    <li><span class="project-tag">autonomous vehicles</span></li>
+                  </ul>
+                  <p class="project-card__desc">
+                    research project integrating imitation learning and soft actor–critic methods
+                    for improved autonomous vehicle control and performance.
+                  </p>
+                  <div class="project-card__links">
+                    <a
+                      class="project-pill"
+                      href="https://github.com/michaeliuedu/carla-sac"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      >github</a
+                    >
+                  </div>
+                </div>
+              </article>
+            </li>
+            <li>
+              <article class="project-card">
+                <!-- Media: assets/projects/leapasl.png -->
+                <div class="project-card__media">
+                  <img
+                    class="project-card__image"
+                    src="assets/projects/leapasl.png"
+                    width="640"
+                    height="416"
+                    alt="leapasl: leap motion detection ui and model pipeline diagram"
+                  />
+                </div>
+                <div class="project-card__body">
+                  <h3 class="project-card__title">
+                    LeapASL (A realtime ASL gesture recognition and translation interface based on
+                    machine learning)
+                  </h3>
+                  <ul class="project-card__tags">
+                    <li><span class="project-tag">Java</span></li>
+                    <li><span class="project-tag">Ultraleap SDK</span></li>
+                    <li><span class="project-tag">Swing</span></li>
+                    <li><span class="project-tag">neural network</span></li>
+                    <li><span class="project-tag">SVM</span></li>
+                  </ul>
+                  <p class="project-card__desc">
+                    independently built a program using leap motion to capture 31,000+ asl
+                    letters, trained a sequential neural network and svm, and
+                    integrated the models with a java swing gui to construct and correct text in
+                    real time
+                  </p>
+                  <div class="project-card__links">
+                    <a
+                      class="project-pill"
+                      href="https://github.com/michaeliuedu/leap-asl"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      >github</a
+                    >
+                  </div>
+                </div>
+              </article>
+            </li>
+            <li>
+              <article class="project-card">
+                <!-- Media: assets/projects/flaurapedia.png -->
+                <div class="project-card__media">
+                  <img
+                    class="project-card__image"
+                    src="assets/projects/flaurapedia.png"
+                    width="640"
+                    height="416"
+                    alt="flaurapedia app: learn, create, and browse plant screens"
+                  />
+                </div>
+                <div class="project-card__body">
+                  <h3 class="project-card__title">
+                    Flaurapedia (An android application for plant identification and blogging)
+                  </h3>
+                  <ul class="project-card__tags">
+                    <li><span class="project-tag">Java</span></li>
+                    <li><span class="project-tag">XML</span></li>
+                    <li><span class="project-tag">Android Studio</span></li>
+                    <li><span class="project-tag">TensorFlow Lite</span></li>
+                    <li><span class="project-tag">Firebase</span></li>
+                  </ul>
+                  <p class="project-card__desc">
+                    independently developed a mobile app built with android studio (java/xml),
+                    tensorflow lite, and google firebase featuring user authentication, plant
+                    identification via image upload or capture, and community post
+                    sharing/browsing.
+                  </p>
+                  <div class="project-card__links">
+                    <a
+                      class="project-pill"
+                      href="https://github.com/michaeliuedu/flaurapedia"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      >github</a
+                    >
+                    <a
+                      class="project-pill"
+                      href="https://www.congressionalappchallenge.us/21-tx24/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      >congressional app challenge page</a
+                    >
+                    <a
+                      class="project-pill"
+                      href="https://www.youtube.com/watch?v=5mt3Dp_T5Wg"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      >youtube demo</a
+                    >
+                  </div>
+                </div>
+              </article>
+            </li>
+            <li>
+              <article class="project-card">
+                <!-- Media: assets/projects/volunteen.jpg (stitched map + profile screenshots) -->
+                <div class="project-card__media">
+                  <img
+                    class="project-card__image"
+                    src="assets/projects/volunteen.jpg"
+                    width="640"
+                    height="416"
+                    alt="volunteen app: find opportunities map and profile screens"
+                  />
+                </div>
+                <div class="project-card__body">
+                  <h3 class="project-card__title">
+                    VolunTEEN (A Flutter-based volunteering platform with Firebase authentication
+                    and Google Maps integration)
+                  </h3>
+                  <ul class="project-card__tags">
+                    <li><span class="project-tag">Dart</span></li>
+                    <li><span class="project-tag">Flutter</span></li>
+                    <li><span class="project-tag">Firebase</span></li>
+                    <li><span class="project-tag">Google Maps</span></li>
+                    <li><span class="project-tag">authentication</span></li>
+                  </ul>
+                  <p class="project-card__desc">
+                    an app using dart and flutter with user authentication, location-based volunteer
+                    matching, and event organization to connect event hosts with local volunteers.
+                  </p>
+                  <div class="project-card__links">
+                    <a
+                      class="project-pill"
+                      href="https://github.com/solbell2/volunTEEN"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      >github</a
+                    >
+                    <a
+                      class="project-pill"
+                      href="https://devpost.com/software/volunteen-7s5nmj"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      >devpost</a
+                    >
+                    <a
+                      class="project-pill"
+                      href="https://www.youtube.com/watch?v=icZ8hjPbFew"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      >youtube demo</a
+                    >
+                  </div>
+                </div>
+              </article>
+            </li>
+            <li>
+              <article class="project-card">
+                <!-- Media: assets/projects/plotter.png -->
+                <div class="project-card__media">
+                  <img
+                    class="project-card__image"
+                    src="assets/projects/plotter.png"
+                    width="640"
+                    height="416"
+                    alt="pen plotter output: four bitmap sketches"
+                  />
+                </div>
+                <div class="project-card__body">
+                  <h3 class="project-card__title">
+                    Bitmap-to-Sketch Pen Plotter Using Raspberry Pi, Python Modules, and Servo
+                    Control
+                  </h3>
+                  <ul class="project-card__tags">
+                    <li><span class="project-tag">Raspberry Pi</span></li>
+                    <li><span class="project-tag">Python</span></li>
+                    <li><span class="project-tag">hardware</span></li>
+                  </ul>
+                  <p class="project-card__desc">
+                    constructed a pen plotter machine that uses a raspberry pi, servo motors,
+                    integrated python modules, and simple household items to convert bitmap images
+                    into physical sketches.
+                  </p>
+                </div>    
+              </article>
+            </li>
+            <li>
+              <article class="project-card">
+                <!-- Media: assets/projects/plotter.png -->
+                <div class="project-card__media">
+                  <img
+                    class="project-card__image"
+                    src="assets/projects/unity.png"
+                    width="640"
+                    height="416"
+                    alt="pen plotter output: four bitmap sketches"
+                  />
+                </div>
+                <div class="project-card__body">
+                  <h3 class="project-card__title">
+                    Old Games I Made for Fun!
+                  </h3>
+                  <ul class="project-card__tags">
+                    <li><span class="project-tag">Unity</span></li>
+                    <li><span class="project-tag">C#</span></li>
+                  </ul>
+                  <p class="project-card__desc">
+                    a collection of old 3d platformer games in high school that i made for fun 
+                    using unity and c# in my free time. likely buggy and unoptimized
+                    but i had fun making them and learned a lot about game development. check them 
+                    out at my itch.io!
+                  </p>
+                  <div class="project-card__links">
+                    <a
+                      class="project-pill"
+                      href="https://beawr.itch.io/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      >itch.io</a
+                    >
+                  </div>
+                </div>    
+              </article>
+            </li>
+          </ul>
+        </section>
+
+        <section class="section" id="news" aria-labelledby="news-heading">
+          <h2 id="news-heading" class="section__title">recent news</h2>
+          <ol class="news-timeline" aria-label="News and milestones">
+            <li class="news-timeline__item">
+              <time class="news-timeline__date" datetime="2025-08">Aug 2025</time>
+              <p class="news-timeline__text">
+                started computer science at carnegie mellon university.
+              </p>
+            </li>
+          </ol>
+        </section>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>built by michael liu</p>
+    </footer>
+
+    <button type="button" id="back-to-top" class="back-to-top" aria-label="Back to top">BACK TO TOP</button>
+
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>

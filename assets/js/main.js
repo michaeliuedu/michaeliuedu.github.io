@@ -45,6 +45,107 @@
     });
   }
 
+  var bearButton = document.getElementById("bear-button");
+  if (bearButton) {
+    var teddyLayer = null;
+    var reduceTeddy = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    var ensureTeddyLayer = function () {
+      if (!teddyLayer) {
+        teddyLayer = document.createElement("div");
+        teddyLayer.className = "teddy-layer";
+        teddyLayer.setAttribute("aria-hidden", "true");
+        document.body.appendChild(teddyLayer);
+      }
+      return teddyLayer;
+    };
+
+    var spawnBears = function () {
+      var layer = ensureTeddyLayer();
+      var origin = bearButton.getBoundingClientRect();
+      var startX = origin.left + origin.width / 2;
+      var startY = origin.top + origin.height / 2;
+      var count = reduceTeddy.matches ? 12 : 20;
+      var spread = Math.max(window.innerWidth * 0.55, 280);
+
+      for (var i = 0; i < count; i++) {
+        var bear = document.createElement("span");
+        bear.className = "teddy-bear";
+        bear.textContent = "🧸";
+
+        // Fan left/right across most of the viewport, then fall down.
+        var dx = (Math.random() - 0.5) * spread * 2;
+        var dy = -40 - Math.random() * 120;
+        var size = 2.8 + Math.random() * 2.6;
+        var duration = reduceTeddy.matches
+          ? 1.2
+          : 1.9 + Math.random() * 1.1;
+        var rotStart = (Math.random() - 0.5) * 50;
+        var rotEnd =
+          rotStart +
+          (Math.random() > 0.5 ? 1 : -1) * (120 + Math.random() * 220);
+
+        bear.style.setProperty("--teddy-x", startX + "px");
+        bear.style.setProperty("--teddy-y", startY + "px");
+        bear.style.setProperty("--teddy-dx", dx + "px");
+        bear.style.setProperty("--teddy-dy", dy + "px");
+        bear.style.setProperty("--teddy-size", size + "rem");
+        bear.style.setProperty("--teddy-duration", duration + "s");
+        bear.style.setProperty("--teddy-rot-start", rotStart + "deg");
+        bear.style.setProperty("--teddy-rot-end", rotEnd + "deg");
+        bear.style.animationDelay = Math.random() * 0.15 + "s";
+
+        layer.appendChild(bear);
+        (function (el, ms) {
+          window.setTimeout(function () {
+            if (el.parentNode) el.parentNode.removeChild(el);
+          }, ms);
+        })(bear, (duration + 0.35) * 1000);
+      }
+    };
+
+    bearButton.addEventListener("click", spawnBears);
+  }
+
+  var skillItems = document.querySelectorAll(".skill-icons li[data-name]");
+  if (skillItems.length) {
+    var clearSkillActive = function () {
+      skillItems.forEach(function (item) {
+        item.classList.remove("is-active");
+      });
+    };
+
+    skillItems.forEach(function (item) {
+      item.setAttribute("tabindex", "0");
+      item.setAttribute("role", "button");
+      item.setAttribute(
+        "aria-label",
+        item.getAttribute("data-name") || "Skill"
+      );
+
+      item.addEventListener("click", function (event) {
+        event.stopPropagation();
+        var wasActive = item.classList.contains("is-active");
+        clearSkillActive();
+        if (!wasActive) {
+          item.classList.add("is-active");
+        }
+      });
+
+      item.addEventListener("keydown", function (event) {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          item.click();
+        } else if (event.key === "Escape") {
+          item.classList.remove("is-active");
+          item.blur();
+        }
+      });
+    });
+
+    document.addEventListener("click", clearSkillActive);
+  }
+
   var revealLists = document.querySelectorAll(".project-showcase");
   var prefersReduce = window.matchMedia("(prefers-reduced-motion: reduce)");
   if (revealLists.length) {

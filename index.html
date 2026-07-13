@@ -10,8 +10,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,400&display=swap"
       rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"
     />
   </head>
   <body>
@@ -31,8 +35,10 @@
         </button>
         <nav class="site-nav" id="site-nav" aria-label="Primary">
           <ul>
-            <li><a href="#home" aria-current="page">home</a></li>
+            <li><a href="index.html" aria-current="page">home</a></li>
             <li><a href="#projects">projects</a></li>
+            <li><a href="experiences.html">experiences</a></li>
+            <li><a href="education.html">education</a></li>
             <li><a href="#news">news</a></li>
           </ul>
         </nav>
@@ -46,9 +52,7 @@
             <div class="avatar">
               <img
                 class="avatar__image"
-                src="assets/me.png"
-                width="320"
-                height="320"
+                src="assets/headshot.jpg"
                 alt="Michael Liu"
               />
             </div>
@@ -132,7 +136,7 @@
           <aside class="hero__aside" aria-labelledby="interests-heading">
             <h2 id="interests-heading" class="aside-heading">interests</h2>
             <ul class="interest-list">
-              <li>machine learning  &amp; reinforcement learning</li>
+              <li>machine learning &amp; reinforcement learning</li>
               <li>autonomous systems</li>
               <li>mobile &amp; web development</li>
               <li>computer systems</li>
@@ -148,18 +152,42 @@
           <div class="section__body">
             <p>
               I am an undergraduate studying computer science at
-              <strong>Carnegie Mellon University</strong>. I am
-              particularly interested in studying computer systems, competitive programming, and building autonomous systems.
-              Outside of computer science, I fence (competitively for about a decade now),
-              enjoy spending time with friends and family, and embark on projects that challenge me.
+              <strong>Carnegie Mellon University</strong>. I am particularly interested in
+              <strong>computer systems</strong>, <strong>competitive programming</strong>, and building
+              <strong>autonomous systems</strong>. Outside of computer science, I fence (competitively
+              for about a decade now), enjoy spending time with friends and family, and embark on
+              projects that challenge me.
             </p>
 
             <p>
-              Currently, I am pursuing research in the robotics department at Carnegie Mellon University, and working as a web developer
-              for <a href="https://scottylabs.org" target="_blank" rel="noopener noreferrer"><strong>ScottyLabs</strong></a> as part of the tech team for <a href="https://cmueats.com" target="_blank" rel="noopener noreferrer"><strong>cmueats.com</strong></a>.
-         
-         
+              Currently, I am pursuing <strong>research</strong> in the robotics department at
+              Carnegie Mellon University, and working as a <strong>web developer</strong> for
+              <a href="https://scottylabs.org" target="_blank" rel="noopener noreferrer"><strong>ScottyLabs</strong></a>
+              as part of the tech team for
+              <a href="https://cmueats.com" target="_blank" rel="noopener noreferrer"><strong>cmueats.com</strong></a>.
             </p>
+
+            <div class="skills" aria-labelledby="skills-subheading">
+              <h3 id="skills-subheading" class="skills__title">relevant skills</h3>
+              <ul class="skill-icons" aria-label="Relevant skills and technologies">
+                <li data-name="Python"><i class="devicon-python-plain colored" role="img" aria-label="Python"></i></li>
+                <li data-name="Java"><i class="devicon-java-plain colored" role="img" aria-label="Java"></i></li>
+                <li data-name="C++"><i class="devicon-cplusplus-plain colored" role="img" aria-label="C++"></i></li>
+                <li data-name="C#"><i class="devicon-csharp-plain colored" role="img" aria-label="C#"></i></li>
+                <li data-name="JavaScript"><i class="devicon-javascript-plain colored" role="img" aria-label="JavaScript"></i></li>
+                <li data-name="TypeScript"><i class="devicon-typescript-plain colored" role="img" aria-label="TypeScript"></i></li>
+                <li data-name="React"><i class="devicon-react-original colored" role="img" aria-label="React"></i></li>
+                <li data-name="Next.js"><i class="devicon-nextjs-plain colored" role="img" aria-label="Next.js"></i></li>
+                <li data-name="Tailwind CSS"><i class="devicon-tailwindcss-original colored" role="img" aria-label="Tailwind CSS"></i></li>
+                <li data-name="Node.js"><i class="devicon-nodejs-plain colored" role="img" aria-label="Node.js"></i></li>
+                <li data-name="Flutter"><i class="devicon-flutter-plain colored" role="img" aria-label="Flutter"></i></li>
+                <li data-name="Dart"><i class="devicon-dart-plain colored" role="img" aria-label="Dart"></i></li>
+                <li data-name="PyTorch"><i class="devicon-pytorch-original colored" role="img" aria-label="PyTorch"></i></li>
+                <li data-name="TensorFlow"><i class="devicon-tensorflow-original colored" role="img" aria-label="TensorFlow"></i></li>
+                <li data-name="PostgreSQL"><i class="devicon-postgresql-plain colored" role="img" aria-label="PostgreSQL"></i></li>
+                <li data-name="Git"><i class="devicon-git-plain colored" role="img" aria-label="Git"></i></li>
+              </ul>
+            </div>
           </div>
         </section>
 
@@ -197,9 +225,9 @@
                     <li><span class="project-tag">Personalized PageRank</span></li>
                   </ul>
                   <p class="project-card__desc">
-                    exploration of the linear algebra concepts behind the pagerank and hits
-                    algorithm, their implementation in python, and further extensions involved
-                    personalized pagerank
+                    Exploration of the linear algebra concepts behind the PageRank and HITS
+                    algorithm, their implementation in Python, and further extensions involving
+                    Personalized PageRank.
                   </p>
                   <div class="project-card__links">
                     <a
@@ -238,7 +266,7 @@
                     <li><span class="project-tag">autonomous vehicles</span></li>
                   </ul>
                   <p class="project-card__desc">
-                    research project integrating imitation learning and soft actor–critic methods
+                    Research project integrating imitation learning and soft actor–critic methods
                     for improved autonomous vehicle control and performance.
                   </p>
                   <div class="project-card__links">
@@ -278,10 +306,10 @@
                     <li><span class="project-tag">SVM</span></li>
                   </ul>
                   <p class="project-card__desc">
-                    independently built a program using leap motion to capture 31,000+ asl
-                    letters, trained a sequential neural network and svm, and
-                    integrated the models with a java swing gui to construct and correct text in
-                    real time
+                    Independently built a program using Leap Motion to capture 31,000+ ASL
+                    letters, trained a sequential neural network and SVM, and
+                    integrated the models with a Java Swing GUI to construct and correct text in
+                    real time.
                   </p>
                   <div class="project-card__links">
                     <a
@@ -319,8 +347,8 @@
                     <li><span class="project-tag">Firebase</span></li>
                   </ul>
                   <p class="project-card__desc">
-                    independently developed a mobile app built with android studio (java/xml),
-                    tensorflow lite, and google firebase featuring user authentication, plant
+                    Independently developed a mobile app built with Android Studio (Java/XML),
+                    TensorFlow Lite, and Google Firebase featuring user authentication, plant
                     identification via image upload or capture, and community post
                     sharing/browsing.
                   </p>
@@ -375,7 +403,7 @@
                     <li><span class="project-tag">authentication</span></li>
                   </ul>
                   <p class="project-card__desc">
-                    an app using dart and flutter with user authentication, location-based volunteer
+                    An app using Dart and Flutter with user authentication, location-based volunteer
                     matching, and event organization to connect event hosts with local volunteers.
                   </p>
                   <div class="project-card__links">
@@ -427,8 +455,8 @@
                     <li><span class="project-tag">hardware</span></li>
                   </ul>
                   <p class="project-card__desc">
-                    constructed a pen plotter machine that uses a raspberry pi, servo motors,
-                    integrated python modules, and simple household items to convert bitmap images
+                    Constructed a pen plotter machine that uses a Raspberry Pi, servo motors,
+                    integrated Python modules, and simple household items to convert bitmap images
                     into physical sketches.
                   </p>
                 </div>    
@@ -455,9 +483,9 @@
                     <li><span class="project-tag">C#</span></li>
                   </ul>
                   <p class="project-card__desc">
-                    a collection of old 3d platformer games in high school that i made for fun 
-                    using unity and c# in my free time. likely buggy and unoptimized
-                    but i had fun making them and learned a lot about game development. check them 
+                    A collection of old 3D platformer games in high school that I made for fun
+                    using Unity and C# in my free time. Likely buggy and unoptimized
+                    but I had fun making them and learned a lot about game development. Check them
                     out at my itch.io!
                   </p>
                   <div class="project-card__links">

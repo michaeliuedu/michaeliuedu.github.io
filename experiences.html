@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="michael liu's experiences" />
+    <title>michael liu</title>
+    <link rel="icon" type="image/gif" href="assets/cs.gif" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,400&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-logo" href="index.html">michael liu</a>
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="site-nav"
+        >
+          <span class="nav-toggle__bar" aria-hidden="true"></span>
+          <span class="visually-hidden">Menu</span>
+        </button>
+        <nav class="site-nav" id="site-nav" aria-label="Primary">
+          <ul>
+            <li><a href="index.html">home</a></li>
+            <li><a href="index.html#projects">projects</a></li>
+            <li><a href="experiences.html" aria-current="page">experiences</a></li>
+            <li><a href="education.html">education</a></li>
+            <li><a href="index.html#news">news</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <div class="content-wrap">
+        <section class="section" id="experiences" aria-labelledby="experiences-heading">
+          <h2 id="experiences-heading" class="section__title">experience</h2>
+          <ol class="project-showcase project-showcase--timeline" aria-label="Work and research experiences">
+            <li>
+              <article class="project-card">
+                <div class="project-card__body">
+                  <div class="exp-header">
+                    <div class="exp-header__left">
+                      <img class="exp-org-logo" src="assets/img/cmu-scs.svg" alt="Carnegie Mellon University School of Computer Science logo" />
+                      <div class="exp-title-block">
+                        <h3 class="project-card__title">Carnegie Mellon University Computer Science Department</h3>
+                        <p class="exp-role exp-role--plain">Teaching Assistant</p>
+                      </div>
+                    </div>
+                    <div class="exp-header__right">
+                      <p class="exp-date">May 2026 &ndash; Present</p>
+                      <p class="exp-loc">Pittsburgh, PA</p>
+                    </div>
+                  </div>
+                  <ul class="project-card__bullets">
+                    <li>
+                      Taught C systems programming (malloc, caches, concurrency, networking) to grad/undergrad students.
+                    </li>
+                    <li>
+                      Led weekly recitations and code reviews; designed/graded exams and held office hours.
+                    </li>
+                  </ul>
+                </div>
+              </article>
+            </li>
+            <li>
+              <article class="project-card">
+                <div class="project-card__body">
+                  <div class="exp-header">
+                    <div class="exp-header__left">
+                      <img class="exp-org-logo" src="assets/img/cmu-ri.png" alt="Carnegie Mellon University Robotics Institute logo" />
+                      <div class="exp-title-block">
+                        <h3 class="project-card__title">Carnegie Mellon University Safe AI Lab</h3>
+                        <p class="exp-role exp-role--plain">Research Assistant</p>
+                      </div>
+                    </div>
+                    <div class="exp-header__right">
+                      <p class="exp-date">Feb 2026 &ndash; Present</p>
+                      <p class="exp-loc">Pittsburgh, PA</p>
+                    </div>
+                  </div>
+                  <ul class="project-card__bullets">
+                    <li>
+                      Contribute to real-time data collection stack for dexterous robot manipulation.
+                    </li>
+                    <li>
+                      Improved gesture-based state machine and hand capture via Apple Vision Pro landmarks.
+                    </li>
+                    <li>
+                      Collected 125+ hours of hand demos (pouring, cutting, folding, tool use).
+                    </li>
+                  </ul>
+                </div>
+              </article>
+            </li>
+            <li>
+              <article class="project-card">
+                <div class="project-card__body">
+                  <div class="exp-header">
+                    <div class="exp-header__left">
+                      <img class="exp-org-logo" src="assets/img/scottylabs.png" alt="ScottyLabs logo" />
+                      <div class="exp-title-block">
+                        <h3 class="project-card__title">ScottyLabs @ Carnegie Mellon University</h3>
+                        <p class="exp-role exp-role--plain">React Web Developer</p>
+                      </div>
+                    </div>
+                    <div class="exp-header__right">
+                      <p class="exp-date">Sept 2025 &ndash; Present</p>
+                      <p class="exp-loc">Pittsburgh, PA</p>
+                    </div>
+                  </div>
+                  <ul class="project-card__bullets">
+                    <li>
+                      Contribute to star ratings and reviews for
+                      <a href="https://CMUEats.com" target="_blank" rel="noopener noreferrer">CMUEats.com</a>
+                      (10,000+ monthly users).
+                    </li>
+                    <li>
+                      Developed sorting by location, rating, and hours; used React Query for optimistic updates and caching.
+                    </li>
+                  </ul>
+                </div>
+              </article>
+            </li>
+            <li>
+              <article class="project-card">
+                <div class="project-card__body">
+                  <div class="exp-header">
+                    <div class="exp-header__left">
+                      <img class="exp-org-logo" src="assets/img/erik-jonsson-linkedin.jpg" alt="Erik Jonsson School of Engineering and Computer Science LinkedIn logo" />
+                      <div class="exp-title-block">
+                        <h3 class="project-card__title">The University of Texas at Dallas</h3>
+                        <p class="exp-role exp-role--plain">Research Intern</p>
+                      </div>
+                    </div>
+                    <div class="exp-header__right">
+                      <p class="exp-date">June 2022 &ndash; Aug 2024</p>
+                      <p class="exp-loc">Dallas, TX</p>
+                    </div>
+                  </div>
+                  <ul class="project-card__bullets">
+                    <li>
+                      Conducted ML research across two labs; presented weekly to faculty and contributed to papers.
+                    </li>
+                    <li>
+                      Built an autonomous driving agent (VAE, imitation learning, SAC); +68% distance traveled with better lane adherence.
+                    </li>
+                    <li>
+                      Trained MLP, CNN, and LSTM models to predict battery life and degradation across temperatures.
+                    </li>
+                  </ul>
+                </div>
+              </article>
+            </li>
+            <li>
+              <article class="project-card">
+                <div class="project-card__body">
+                  <div class="exp-header">
+                    <div class="exp-header__left">
+                      <img class="exp-org-logo" src="assets/img/stanford.svg" alt="Stanford University logo" />
+                      <div class="exp-title-block">
+                        <h3 class="project-card__title">Stanford University</h3>
+                        <p class="exp-role exp-role--plain">Summer Intern</p>
+                      </div>
+                    </div>
+                    <div class="exp-header__right">
+                      <p class="exp-date">Aug 2024 &ndash; Aug 2024</p>
+                      <p class="exp-loc">Stanford, CA</p>
+                    </div>
+                  </div>
+                  <ul class="project-card__bullets">
+                    <li>
+                      Invited to lectures on robotics, computer vision, biomedical engineering, and entrepreneurship.
+                    </li>
+                    <li>
+                      Led a team of 5 to prototype and pitch a mobile app to promote exercise accuracy using pose estimation. 
+                    </li>
+                  </ul>
+                </div>
+              </article>
+            </li>
+            <li>
+              <article class="project-card">
+                <div class="project-card__body">
+                  <div class="exp-header">
+                    <div class="exp-header__left">
+                      <img class="exp-org-logo" src="assets/img/generic-academic.svg" alt="Generic academic institution icon (placeholder)" />
+                      <div class="exp-title-block">
+                        <h3 class="project-card__title">Dr. Meng's Coding Camp</h3>
+                        <p class="exp-role exp-role--plain">Teaching Assistant</p>
+                      </div>
+                    </div>
+                    <div class="exp-header__right">
+                      <p class="exp-date">Jun 2022 &ndash; Aug 2024</p>
+                      <p class="exp-loc">Dallas, TX</p>
+                    </div>
+                  </div>
+                  <ul class="project-card__bullets">
+                    <li>
+                  Taught lectures, hosted office hours, and graded homework for 100+ students in grades 6 &ndash; 10 on data structures,
+                  algorithms, and programming using the Raspberry Pi.
+                  </ul>
+                </div>
+              </article>
+            </li>
+          </ol>
+        </section>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>built by michael liu</p>
+    </footer>
+
+    <button type="button" id="back-to-top" class="back-to-top" aria-label="Back to top">BACK TO TOP</button>
+
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>

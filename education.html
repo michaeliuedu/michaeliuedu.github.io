@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="michael liu's education" />
+    <title>michael liu</title>
+    <link rel="icon" type="image/gif" href="assets/cs.gif" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,400&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-logo" href="index.html">michael liu</a>
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="site-nav"
+        >
+          <span class="nav-toggle__bar" aria-hidden="true"></span>
+          <span class="visually-hidden">Menu</span>
+        </button>
+        <nav class="site-nav" id="site-nav" aria-label="Primary">
+          <ul>
+            <li><a href="index.html">home</a></li>
+            <li><a href="index.html#projects">projects</a></li>
+            <li><a href="experiences.html">experiences</a></li>
+            <li><a href="education.html" aria-current="page">education</a></li>
+            <li><a href="index.html#news">news</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <div class="content-wrap">
+        <section class="section" id="education" aria-labelledby="education-heading">
+          <h2 id="education-heading" class="section__title">education</h2>
+          <ol class="project-showcase project-showcase--timeline" aria-label="Education">
+            <li>
+              <article class="project-card">
+                <div class="project-card__body">
+                  <div class="exp-header">
+                    <div class="exp-header__left">
+                      <img class="exp-org-logo" src="assets/img/cmu.ico" alt="Carnegie Mellon University logo" />
+                      <div class="exp-title-block">
+                        <h3 class="project-card__title">Carnegie Mellon University</h3>
+                        <p class="exp-role exp-role--plain">Bachelor of Science, Computer Science</p>
+                        <p class="exp-role exp-role--concentration">Concentration in Machine Learning</p>
+                      </div>
+                    </div>
+                    <div class="exp-header__right">
+                      <p class="exp-date">Aug 2025 &ndash; May 2028</p>
+                      <p class="exp-loc">Pittsburgh, PA</p>
+                    </div>
+                  </div>
+                  <div class="edu-courses">
+                    <h4 class="edu-courses__title">relevant coursework</h4>
+                    <ul class="edu-course-list" aria-label="Relevant coursework">
+                      <li>
+                        <p class="edu-course__line">
+                          <span class="project-tag edu-course__code">15-122</span>
+                          <span class="edu-course__name">Principles of Imperative Computation</span>
+                        </p>
+                        <p class="edu-course__desc">
+                          Data structures and algorithms in C. Writing
+                          provably correct code using contracts, invariants, and algorithmic reasoning.
+                        </p>
+                      </li>
+                      <li>
+                        <p class="edu-course__line">
+                          <span class="project-tag edu-course__code">15-150</span>
+                          <span class="edu-course__name">Functional Programming</span>
+                        </p>
+                        <p class="edu-course__desc">
+                          Functional programming in Standard ML. Recursion, higher-order
+                          functions, inductive reasoning, and analyzing program correctness and complexity.
+                        </p>
+                      </li>
+                      <li>
+                        <p class="edu-course__line">
+                          <span class="project-tag edu-course__code">15-213</span>
+                          <span class="edu-course__name">Introduction to Computer Systems</span>
+                        </p>
+                        <p class="edu-course__desc">
+                          Machine-level code, memory and caching, linking,
+                          virtual memory, concurrency, and networking in C.
+                        </p>
+                      </li>
+                      <li>
+                        <p class="edu-course__line">
+                          <span class="project-tag edu-course__code">15-151</span>
+                          <span class="edu-course__name">Mathematical Foundations for Computer Science</span>
+                        </p>
+                        <p class="edu-course__desc">
+                          Mathematical proof and discrete structures, including logic, sets,
+                          functions, relations, induction, and number theory.
+                        </p>
+                      </li>
+                      <li>
+                        <p class="edu-course__line">
+                          <span class="project-tag edu-course__code">15-251</span>
+                          <span class="edu-course__name">Great Ideas in Theoretical Computer Science</span>
+                        </p>
+                        <p class="edu-course__desc">
+                          Computability and complexity, automata, probability,
+                          cryptography, and the fundamental limits of computation.
+                        </p>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </article>
+            </li>
+            <li>
+              <article class="project-card">
+                <div class="project-card__body">
+                  <div class="exp-header">
+                    <div class="exp-header__left">
+                      <img class="exp-org-logo" src="assets/img/coppell-badge.png" alt="Coppell High School logo" />
+                      <div class="exp-title-block">
+                        <h3 class="project-card__title">Coppell High School</h3>
+                        <p class="exp-role exp-role--plain">Top 1% &middot; Rank 8 of 940</p>
+                      </div>
+                    </div>
+                    <div class="exp-header__right">
+                      <p class="exp-date">Aug 2021 &ndash; May 2025</p>
+                      <p class="exp-loc">Coppell, TX</p>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </li>
+          </ol>
+        </section>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>built by michael liu</p>
+    </footer>
+
+    <button type="button" id="back-to-top" class="back-to-top" aria-label="Back to top">BACK TO TOP</button>
+
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>

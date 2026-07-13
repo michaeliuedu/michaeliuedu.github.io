@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Academic institution">
+  <circle cx="32" cy="32" r="30" fill="#e3eef2" stroke="#1d5d75" stroke-width="2"/>
+  <path d="M32 16 8 27l24 11 20-9.17V42h4V27L32 16z" fill="#1d5d75"/>
+  <path d="M18 34.5v8c0 3.6 6.3 6.5 14 6.5s14-2.9 14-6.5v-8l-14 6.4-14-6.4z" fill="#1d5d75"/>
+</svg>

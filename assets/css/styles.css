@@ -10,9 +10,8 @@
   --color-border: #e2e6ea;
   --color-surface: #fafbfc;
   --font-serif: "Libre Baskerville", Georgia, "Times New Roman", serif;
-  --font-sans: "Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto,
-    Arial, sans-serif;
-  --content-max: 56rem;
+  --font-sans: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --content-max: 62rem;
   --space-xs: 0.35rem;
   --space-sm: 0.75rem;
   --space-md: 1.25rem;
@@ -37,10 +36,17 @@ html {
 body {
   margin: 0;
   font-family: var(--font-sans);
-  font-size: 1.05rem;
-  line-height: 1.65;
+  font-size: 1.15rem;
+  line-height: 1.7;
   color: var(--color-text);
   background: #fff;
+}
+
+.section__body p,
+.project-card__desc,
+.news-timeline__text {
+  font-size: 1.1rem;
+  font-weight: 400;
 }
 
 .visually-hidden {
@@ -93,7 +99,7 @@ a:hover {
 .site-header__inner {
   max-width: var(--content-max);
   margin: 0 auto;
-  padding: var(--space-sm) var(--space-md);
+  padding: var(--space-md);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -105,7 +111,7 @@ a:hover {
   font-weight: 700;
   letter-spacing: 0.02em;
   text-decoration: none;
-  font-size: 1.1rem;
+  font-size: 1.35rem;
 }
 
 .site-logo:hover {
@@ -125,7 +131,7 @@ a:hover {
   color: #e8f4f8;
   text-decoration: none;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1.1rem;
 }
 
 .site-nav a:hover {
@@ -164,8 +170,8 @@ a:hover {
 
 .hero__grid {
   display: grid;
-  grid-template-columns: minmax(7rem, 9rem) 1fr minmax(12rem, 14rem);
-  gap: var(--space-lg) var(--space-xl);
+  grid-template-columns: minmax(10rem, 13rem) 1fr minmax(16rem, 20rem);
+  gap: var(--space-lg) var(--space-lg);
   align-items: start;
 }
 
@@ -221,8 +227,8 @@ a:hover {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 2.9rem;
+  height: 2.9rem;
   border-radius: 50%;
   background: var(--color-surface);
   border: var(--hairline) solid var(--color-border);
@@ -239,9 +245,43 @@ a:hover {
   border-color: var(--color-header);
 }
 
+/* Brand colors per social link (LinkedIn, GitHub, Email) */
+.social li:nth-child(1) .social__link {
+  color: #0a66c2;
+  border-color: #0a66c2;
+}
+
+.social li:nth-child(1) .social__link:hover {
+  background: #0a66c2;
+  color: #fff;
+  border-color: #0a66c2;
+}
+
+.social li:nth-child(2) .social__link {
+  color: #1c1c1c;
+  border-color: #1c1c1c;
+}
+
+.social li:nth-child(2) .social__link:hover {
+  background: #1c1c1c;
+  color: #fff;
+  border-color: #1c1c1c;
+}
+
+.social li:nth-child(3) .social__link {
+  color: #ea4335;
+  border-color: #ea4335;
+}
+
+.social li:nth-child(3) .social__link:hover {
+  background: #ea4335;
+  color: #fff;
+  border-color: #ea4335;
+}
+
 .social__link .social__icon {
-  width: 1.125rem;
-  height: 1.125rem;
+  width: 1.5rem;
+  height: 1.5rem;
   display: block;
   flex-shrink: 0;
 }
@@ -251,8 +291,7 @@ a:hover {
 }
 
 .hero__aside {
-  border-left: var(--hairline) solid var(--color-border);
-  padding-left: var(--space-lg);
+  padding-left: 0;
 }
 
 .aside-heading {
@@ -306,6 +345,16 @@ a:hover {
   text-transform: lowercase;
 }
 
+.section__title::after {
+  content: "";
+  display: block;
+  width: 2.5rem;
+  height: 3px;
+  margin-top: 0.45rem;
+  background: var(--color-header);
+  border-radius: 2px;
+}
+
 .section__body p {
   margin: 0 0 var(--space-md);
   max-width: 48rem;
@@ -315,9 +364,11 @@ a:hover {
   margin-bottom: 0;
 }
 
-/* Home about: use full content-wrap width (not 48rem measure column) */
+/* Home about: use full content-wrap width (not 48rem measure column), slightly larger copy */
 #about .section__body p {
   max-width: none;
+  font-size: 1.25rem;
+  line-height: 1.75;
 }
 
 .section--projects .section__body .projects-intro {
@@ -332,7 +383,7 @@ a:hover {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: var(--space-sm);
 }
 
 .project-showcase > li {
@@ -340,28 +391,40 @@ a:hover {
   padding: 0;
 }
 
+/* Scroll reveal — cards slide in from the side (only when JS enables it) */
+.project-showcase.js-reveal > li {
+  opacity: 0;
+  transform: translateX(-3rem);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+}
+
+.project-showcase.js-reveal > li:nth-child(even) {
+  transform: translateX(3rem);
+}
+
+.project-showcase.js-reveal > li.in-view {
+  opacity: 1;
+  transform: none;
+}
+
+.project-card {
+  padding: var(--space-md) var(--space-lg);
+  border: var(--hairline) solid transparent;
+  border-radius: var(--radius-sm);
+}
+
 .section--projects .project-card {
   display: grid;
-  grid-template-columns: minmax(10.5rem, 16rem) minmax(0, 1fr);
+  grid-template-columns: minmax(13rem, 19rem) minmax(0, 1fr);
   gap: var(--space-lg) var(--space-xl);
   align-items: start;
-  padding: var(--space-md) 0;
-  border-bottom: var(--hairline) solid var(--color-border);
-}
-
-.project-showcase > li:first-child .project-card {
-  padding-top: 0;
-}
-
-.project-showcase > li:last-child .project-card {
-  border-bottom: none;
-  padding-bottom: 0;
 }
 
 .project-card__media {
   border-radius: var(--radius-sm);
   overflow: hidden;
-  border: var(--hairline) solid var(--color-border);
   box-shadow: var(--shadow-soft);
   background: repeating-linear-gradient(
     -45deg,
@@ -465,7 +528,8 @@ a:hover {
   margin: 0 0 var(--space-sm);
   max-width: 48rem;
   color: var(--color-text);
-  font-size: 1rem;
+  font-size: 1.1rem;
+  font-weight: 400;
   line-height: 1.65;
 }
 
@@ -506,6 +570,505 @@ a.project-pill:hover {
 a.project-pill:focus-visible {
   outline: 2px solid var(--color-link);
   outline-offset: 2px;
+}
+
+/* Experience & education entries reuse the home-page project-card look
+   (.project-card chrome + hover defined above). Here we only add the
+   subtitle/meta line and the bulleted descriptions used inside them. */
+.project-card__bullets {
+  margin: 0;
+  padding-left: 1.15rem;
+  max-width: 48rem;
+  list-style: disc;
+}
+
+/* Timeline cards: bullets full-width under the two-column header (title +
+   date/location), with markers flush to the org logo left edge. */
+.project-showcase--timeline .project-card__bullets {
+  max-width: none;
+  width: 100%;
+  padding-left: 1.15rem;
+  margin-left: 0;
+  box-sizing: border-box;
+}
+
+/* Education coursework block also spans the full card under the header */
+.project-showcase--timeline .edu-courses {
+  max-width: none;
+  width: 100%;
+}
+
+/* Match education .edu-course__desc body typography (Source Serif 4). */
+.project-card__bullets li {
+  margin: 0 0 0.15rem;
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--color-text);
+}
+
+.project-card__bullets li:last-child {
+  margin-bottom: 0;
+}
+
+/* Experiences — news-style vertical timeline wrapping project-card entries */
+.project-showcase--timeline {
+  --exp-rail-width: 5px;
+  --exp-dot-size: 14px;
+  --exp-logo-size: 40px;
+  --exp-card-pad-y: 1rem;
+  --exp-logo-gap: 0.85rem;
+  position: relative;
+  gap: 1.5rem;
+  padding-top: 0.15rem;
+}
+
+.project-showcase--timeline .project-card {
+  padding: var(--exp-card-pad-y) 1.35rem;
+}
+
+.project-showcase--timeline::before {
+  content: "";
+  position: absolute;
+  left: calc(var(--exp-dot-size) / 2 - var(--exp-rail-width) / 2);
+  top: 0.35rem;
+  bottom: 0.35rem;
+  width: var(--exp-rail-width);
+  background: var(--color-border);
+  border-radius: 2px;
+}
+
+.project-showcase--timeline > li {
+  position: relative;
+  padding-left: calc(var(--exp-dot-size) + 1.35rem);
+}
+
+/* Dot centers on the org logo */
+.project-showcase--timeline > li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: calc(
+    var(--exp-card-pad-y) + (var(--exp-logo-size) / 2) - (var(--exp-dot-size) / 2)
+  );
+  width: var(--exp-dot-size);
+  height: var(--exp-dot-size);
+  border-radius: 50%;
+  background: var(--color-header);
+  border: 2.5px solid #fff;
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+/* Header: title/role column + compact date/location meta */
+.exp-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  column-gap: var(--space-lg);
+  row-gap: 0.45rem;
+  margin: 0 0 0.95rem;
+}
+
+.exp-header:last-child {
+  margin-bottom: 0;
+}
+
+.exp-header__left {
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--exp-logo-gap, 0.85rem);
+}
+
+.exp-header__right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  padding-top: 0.12rem;
+  flex-shrink: 0;
+}
+
+/* Role / degree / stat lines — plain text with teal emphasis; date and location stay muted. */
+.exp-role {
+  margin: 0;
+}
+
+.exp-role--plain {
+  font-family: var(--font-serif);
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--color-header);
+}
+
+.exp-role--concentration {
+  margin-top: 0.15rem;
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--color-header);
+}
+
+/* Date uses the display serif (Libre Baskerville) so it reads with the titles,
+   not as a small meta/badge line. Still muted and subordinate to the org name. */
+.exp-date {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.06rem;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--color-muted);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.exp-loc {
+  margin: 0.15rem 0 0;
+  font-family: var(--font-serif);
+  font-size: 0.92rem;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+/* Organization logo — sized to the title line, top-aligned with the text block */
+.exp-title-block {
+  min-width: 0;
+  padding-top: 0.05rem;
+}
+
+.exp-title-block .project-card__title {
+  margin: 0 0 0.22rem;
+  font-size: clamp(1.08rem, 1.85vw, 1.28rem);
+  line-height: 1.32;
+}
+
+.exp-org-logo {
+  width: var(--exp-logo-size, 40px);
+  height: var(--exp-logo-size, 40px);
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.exp-org-logo--wide {
+  width: auto;
+  max-width: 4.75rem;
+  height: var(--exp-logo-size, 40px);
+}
+
+/* Relevant coursework under the CMU entry — same header→content rhythm as
+   experience bullets, with a light divider before the coursework label.
+   Extra air below the degree line so it isn't flush against the divider. */
+.exp-header:has(+ .edu-courses) {
+  margin-bottom: 1.15rem;
+}
+
+.edu-courses {
+  margin-top: 0;
+  padding-top: 1.05rem;
+  border-top: var(--hairline) solid var(--color-border);
+}
+
+.edu-courses__title {
+  font-family: var(--font-serif);
+  font-size: 0.92rem;
+  font-weight: 700;
+  margin: 0 0 0.55rem;
+  color: var(--color-header);
+  text-transform: lowercase;
+}
+
+/* Coursework — project-tag code box + serif title + body desc (projects look) */
+.edu-course-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.edu-course-list > li {
+  margin: 0;
+  padding: 0;
+}
+
+.edu-course__line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.65rem;
+  margin: 0;
+  line-height: 1.35;
+}
+
+/* Reuse .project-tag chrome; lock all course codes to one red colorway */
+.edu-course__code.project-tag {
+  flex: 0 0 auto;
+  font-variant-numeric: tabular-nums;
+  background: #ffebee;
+  color: #b71c1c;
+  border-color: #ef9a9a;
+}
+
+.edu-course__name {
+  font-family: var(--font-serif);
+  font-size: clamp(1.05rem, 1.8vw, 1.2rem);
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--color-text);
+}
+
+.edu-course__desc {
+  margin: 0.35rem 0 0;
+  max-width: 48rem;
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--color-text);
+}
+
+/* Chips — shared colorful pills for skills and interests */
+.chip-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip-list li {
+  margin: 0;
+  padding: 0;
+}
+
+.chip {
+  display: inline-block;
+  padding: 0.32rem 0.72rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  border: var(--hairline) solid;
+  border-radius: 20px;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.chip--tag {
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.chip:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
+}
+
+.chip-list li:nth-child(7n + 1) .chip {
+  background: #e3f2fd;
+  color: #0d47a1;
+  border-color: #90caf9;
+}
+
+.chip-list li:nth-child(7n + 2) .chip {
+  background: #fce4ec;
+  color: #880e4f;
+  border-color: #f48fb1;
+}
+
+.chip-list li:nth-child(7n + 3) .chip {
+  background: #e8f5e9;
+  color: #1b5e20;
+  border-color: #81c784;
+}
+
+.chip-list li:nth-child(7n + 4) .chip {
+  background: #fff3e0;
+  color: #e65100;
+  border-color: #ffb74d;
+}
+
+.chip-list li:nth-child(7n + 5) .chip {
+  background: #f3e5f5;
+  color: #4a148c;
+  border-color: #ce93d8;
+}
+
+.chip-list li:nth-child(7n + 6) .chip {
+  background: #e0f7fa;
+  color: #006064;
+  border-color: #4dd0e1;
+}
+
+.chip-list li:nth-child(7n + 7) .chip {
+  background: #efebe9;
+  color: #3e2723;
+  border-color: #bcaaa4;
+}
+
+/* Skills — grouped chip rows under the about section */
+.skills {
+  margin-top: var(--space-lg);
+}
+
+.skills__title {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 var(--space-md);
+  text-transform: lowercase;
+}
+
+.skill-icons {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.skill-icons li {
+  position: relative;
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0;
+  width: 2.4rem;
+  height: 2.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.skill-icons i {
+  display: block;
+  font-size: 2.2rem;
+  transition: transform 0.2s ease;
+}
+
+.skill-icons li:hover i {
+  transform: translateY(-5px);
+}
+
+/* Hover tooltip showing the skill name (light colored badge, like the site tags) */
+.skill-icons li::after {
+  content: attr(data-name);
+  position: absolute;
+  bottom: calc(100% + 0.8rem);
+  left: 50%;
+  transform: translateX(-50%) translateY(0.3rem);
+  z-index: 10;
+  padding: 0.5rem 0.9rem;
+  background: #e3f2fd;
+  color: #0d47a1;
+  border: var(--hairline) solid #90caf9;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  white-space: nowrap;
+  border-radius: 0;
+  box-shadow: 0 4px 12px rgba(26, 95, 122, 0.18);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.16s ease,
+    transform 0.16s ease;
+}
+
+.skill-icons li:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-icons li::after {
+    transition: opacity 0.16s ease;
+  }
+}
+
+/* Motion — hover life for cards, images, chips, and links */
+.project-card__media,
+.project-card__title,
+.social__link,
+a.project-pill {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    background 0.15s ease;
+}
+
+.project-card__image {
+  transition: transform 0.4s ease;
+}
+
+.project-card {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  box-shadow: 0 10px 26px rgba(26, 95, 122, 0.15);
+}
+
+.project-card:hover .project-card__title {
+  color: var(--color-header);
+}
+
+/* Education entry cards (CMU, Coppell) stay static — no hover lift/shadow.
+   Experiences keep the shared .project-card:hover treatment above. */
+#education .project-card {
+  transition: none;
+}
+
+#education .project-card:hover {
+  transform: none;
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+#education .project-card:hover .project-card__title {
+  color: inherit;
+}
+
+.section--projects .project-card:hover .project-card__image {
+  transform: scale(1.05);
+}
+
+.section--projects .project-card:hover .project-card__media {
+  box-shadow: 0 8px 22px rgba(26, 95, 122, 0.18);
+}
+
+.social__link:hover {
+  transform: translateY(-2px);
+}
+
+a.project-pill:hover {
+  transform: translateY(-2px);
 }
 
 /* News — vertical rail + markers only */
@@ -628,7 +1191,33 @@ a.project-pill:focus-visible {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .back-to-top {
+  .back-to-top,
+  .chip,
+  .project-card,
+  .project-card__media,
+  .project-card__image,
+  .project-card__title,
+  .social__link,
+  a.project-pill {
+    transition: none;
+  }
+
+  .chip:hover,
+  .social__link:hover,
+  a.project-pill:hover,
+  .skill-icons li:hover i,
+  .project-card:hover,
+  .section--projects .project-card:hover .project-card__image {
+    transform: none;
+  }
+
+  .skill-icons i {
+    transition: none;
+  }
+
+  .project-showcase.js-reveal > li {
+    opacity: 1;
+    transform: none;
     transition: none;
   }
 }
@@ -671,7 +1260,7 @@ a.project-pill:focus-visible {
 
   .hero__photo {
     justify-self: center;
-    max-width: 10rem;
+    max-width: 14rem;
   }
 
   .hero__meta {
@@ -693,16 +1282,50 @@ a.project-pill:focus-visible {
   .section--projects .project-card {
     grid-template-columns: 1fr;
     gap: var(--space-md);
+    padding: var(--space-md);
   }
 
   .project-card__media {
     width: 100%;
   }
+
+  /* Experience header stacks: date/location drop below the title/role */
+  .project-showcase--timeline {
+    --exp-logo-size: 36px;
+    --exp-card-pad-y: 0.9rem;
+    --exp-dot-size: 12px;
+    gap: 1.25rem;
+  }
+
+  .project-showcase--timeline > li {
+    padding-left: calc(var(--exp-dot-size) + 1rem);
+  }
+
+  .exp-header {
+    grid-template-columns: 1fr;
+    row-gap: 0.4rem;
+  }
+
+  .exp-header__right {
+    align-items: flex-start;
+    text-align: left;
+    padding-top: 0;
+    padding-left: calc(var(--exp-logo-size, 36px) + var(--exp-logo-gap, 0.85rem));
+  }
+
+  .exp-date,
+  .exp-loc {
+    white-space: normal;
+  }
+
+  .exp-org-logo--wide {
+    max-width: 4.25rem;
+  }
 }
 
 @media (min-width: 769px) and (max-width: 900px) {
   .hero__grid {
-    grid-template-columns: 8rem 1fr;
+    grid-template-columns: 11rem 1fr;
     grid-template-rows: auto auto;
   }
 

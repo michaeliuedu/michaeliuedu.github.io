@@ -5,12 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="michael liu's personal website" />
     <title>michael liu</title>
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("theme");
+          var dark =
+            stored === "dark" ||
+            (!stored &&
+              window.matchMedia("(prefers-color-scheme: dark)").matches);
+          if (dark) document.documentElement.setAttribute("data-theme", "dark");
+        } catch (e) {}
+      })();
+    </script>
     <link rel="icon" type="image/gif" href="assets/cs.gif" />
     <link rel="stylesheet" href="assets/css/styles.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;1,8..60,400&display=swap"
       rel="stylesheet"
     />
     <link
@@ -24,24 +36,62 @@
     <header class="site-header">
       <div class="site-header__inner">
         <a class="site-logo" href="#home">michael liu</a>
-        <button
-          class="nav-toggle"
-          type="button"
-          aria-expanded="false"
-          aria-controls="site-nav"
-        >
-          <span class="nav-toggle__bar" aria-hidden="true"></span>
-          <span class="visually-hidden">Menu</span>
-        </button>
         <nav class="site-nav" id="site-nav" aria-label="Primary">
           <ul>
-            <li><a href="index.html" aria-current="page">home</a></li>
+            <li><a href="#home" aria-current="page">home</a></li>
             <li><a href="#projects">projects</a></li>
             <li><a href="experiences.html">experiences</a></li>
             <li><a href="education.html">education</a></li>
-            <li><a href="#news">news</a></li>
           </ul>
         </nav>
+        <div class="header-actions">
+          <button
+            type="button"
+            class="theme-toggle"
+            id="theme-toggle"
+            aria-label="Toggle dark mode"
+            title="Toggle theme"
+          >
+            <svg
+              class="theme-toggle__icon theme-toggle__icon--sun"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="4" />
+              <path
+                d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+              />
+            </svg>
+            <svg
+              class="theme-toggle__icon theme-toggle__icon--moon"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M21 14.5A8.5 8.5 0 1 1 9.5 3a7 7 0 0 0 11.5 11.5z" />
+            </svg>
+          </button>
+          <button
+            class="nav-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="site-nav"
+          >
+            <span class="nav-toggle__bar" aria-hidden="true"></span>
+            <span class="visually-hidden">Menu</span>
+          </button>
+        </div>
       </div>
     </header>
 
@@ -59,12 +109,32 @@
           </div>
           <div class="hero__intro">
             <h1 id="hero-title" class="hero__name">michael liu</h1>
-            <ul class="hero__meta">
+            <ul class="hero__meta" aria-label="Contact and study info">
               <li>
-                <b>studying:</b> computer science @ carnegie mellon university
+                <b>studying:</b>
+                <a class="meta-link" href="education.html">
+                  <span class="meta-link__text">computer science @ carnegie mellon university</span>
+                </a>
+                <span aria-hidden="true">🎓</span>
               </li>
-              <li><b>location:</b> pittsburgh, pa [from dallas, tx]</li>
-              <li><b>email:</b> mhliu@andrew.cmu.edu</li>
+              <li>
+                <b>location:</b> pittsburgh, pa [from dallas, tx]
+                <span aria-hidden="true">📍</span>
+              </li>
+              <li>
+                <b>email:</b>
+                <button
+                  type="button"
+                  class="copy-email"
+                  data-email="mhliu@andrew.cmu.edu"
+                  aria-label="Copy email address"
+                  title="Click to copy"
+                >
+                  <span class="copy-email__text">mhliu@andrew.cmu.edu</span>
+                  <span class="copy-email__icon" aria-hidden="true">🔗</span>
+                  <span class="copy-email__tip" aria-hidden="true">COPIED!</span>
+                </button>
+              </li>
             </ul>
             <ul class="social" aria-label="Social profiles">
               <li>
@@ -134,13 +204,34 @@
 
           </div>
           <aside class="hero__aside" aria-labelledby="interests-heading">
-            <h2 id="interests-heading" class="aside-heading">interests</h2>
+            <h2 id="interests-heading" class="aside-heading typewriter-line" data-text="interests"></h2>
             <ul class="interest-list">
-              <li>machine learning &amp; reinforcement learning</li>
-              <li>autonomous systems</li>
-              <li>mobile &amp; web development</li>
-              <li>computer systems</li>
-              <li>purposeful projects</li>
+              <li>
+                🧠
+                <span
+                  class="typewriter-line"
+                  data-text="machine learning &amp; reinforcement learning"
+                ></span>
+              </li>
+              <li>
+                🚗
+                <span class="typewriter-line" data-text="autonomous systems"></span>
+              </li>
+              <li>
+                📱
+                <span
+                  class="typewriter-line"
+                  data-text="mobile &amp; web development"
+                ></span>
+              </li>
+              <li>
+                💻
+                <span class="typewriter-line" data-text="computer systems"></span>
+              </li>
+              <li>
+                🎯
+                <span class="typewriter-line" data-text="purposeful projects"></span>
+              </li>
             </ul>
           </aside>
         </div>
@@ -151,7 +242,7 @@
           <h2 id="about-heading" class="section__title">about me</h2>
           <div class="section__body">
             <p>
-              I am an undergraduate studying computer science at
+              My name is Michael Liu, I am an undergraduate studying computer science at
               <strong>Carnegie Mellon University</strong>. I am particularly interested in
               <strong>computer systems</strong>, <strong>competitive programming</strong>, and building
               <strong>autonomous systems</strong>. Outside of computer science, I fence (competitively
@@ -164,29 +255,32 @@
               Carnegie Mellon University, a <strong>web developer</strong> for
               <a href="https://scottylabs.org" target="_blank" rel="noopener noreferrer"><strong>ScottyLabs</strong></a>
               as part of the tech team for
-              <a href="https://cmueats.com" target="_blank" rel="noopener noreferrer"><strong>cmueats.com</strong></a>, and 
-              a <strong>teaching assistant</strong> for the <strong>Introduction to Computer Science</strong> course.
+              <a href="https://cmueats.com" target="_blank" rel="noopener noreferrer"><strong>CMUEats.com</strong></a>, and 
+              a <strong>teaching assistant</strong> for CMU's  <strong>Introduction to Computer Science</strong> course.
             </p>
 
             <div class="skills" aria-labelledby="skills-subheading">
               <h3 id="skills-subheading" class="skills__title">relevant skills</h3>
               <ul class="skill-icons" aria-label="Relevant skills and technologies">
                 <li data-name="Python"><i class="devicon-python-plain colored" role="img" aria-label="Python"></i></li>
-                <li data-name="Java"><i class="devicon-java-plain colored" role="img" aria-label="Java"></i></li>
                 <li data-name="C++"><i class="devicon-cplusplus-plain colored" role="img" aria-label="C++"></i></li>
+                <li data-name="Java"><i class="devicon-java-plain colored" role="img" aria-label="Java"></i></li>
                 <li data-name="C#"><i class="devicon-csharp-plain colored" role="img" aria-label="C#"></i></li>
                 <li data-name="JavaScript"><i class="devicon-javascript-plain colored" role="img" aria-label="JavaScript"></i></li>
                 <li data-name="TypeScript"><i class="devicon-typescript-plain colored" role="img" aria-label="TypeScript"></i></li>
+                <li data-name="HTML"><i class="devicon-html5-plain colored" role="img" aria-label="HTML"></i></li>
+                <li data-name="CSS"><i class="devicon-css3-plain colored" role="img" aria-label="CSS"></i></li>
                 <li data-name="React"><i class="devicon-react-original colored" role="img" aria-label="React"></i></li>
                 <li data-name="Next.js"><i class="devicon-nextjs-plain colored" role="img" aria-label="Next.js"></i></li>
-                <li data-name="Tailwind CSS"><i class="devicon-tailwindcss-original colored" role="img" aria-label="Tailwind CSS"></i></li>
                 <li data-name="Node.js"><i class="devicon-nodejs-plain colored" role="img" aria-label="Node.js"></i></li>
-                <li data-name="Flutter"><i class="devicon-flutter-plain colored" role="img" aria-label="Flutter"></i></li>
-                <li data-name="Dart"><i class="devicon-dart-plain colored" role="img" aria-label="Dart"></i></li>
+                <li data-name="Tailwind CSS"><i class="devicon-tailwindcss-original colored" role="img" aria-label="Tailwind CSS"></i></li>
                 <li data-name="PyTorch"><i class="devicon-pytorch-original colored" role="img" aria-label="PyTorch"></i></li>
                 <li data-name="TensorFlow"><i class="devicon-tensorflow-original colored" role="img" aria-label="TensorFlow"></i></li>
                 <li data-name="PostgreSQL"><i class="devicon-postgresql-plain colored" role="img" aria-label="PostgreSQL"></i></li>
+                <li data-name="Dart"><i class="devicon-dart-plain colored" role="img" aria-label="Dart"></i></li>
                 <li data-name="Git"><i class="devicon-git-plain colored" role="img" aria-label="Git"></i></li>
+                <li data-name="GitHub"><i class="devicon-github-original colored" role="img" aria-label="GitHub"></i></li>
+                <li data-name="Unix"><i class="devicon-linux-plain colored" role="img" aria-label="Unix"></i></li>
               </ul>
             </div>
           </div>
@@ -200,19 +294,164 @@
             </p>
           </div>
 
-          <ul class="project-showcase">
+          <ul class="project-showcase js-reveal">
             <li>
               <article class="project-card">
-                <!-- Media: assets/projects/pagerank.gif (replace file to update animation) -->
-                <div class="project-card__media">
-                  <img
-                    class="project-card__image"
-                    src="assets/projects/pagerank.gif"
-                    width="640"
-                    height="416"
-                    alt="pagerank and hits demo: graph and bar chart"
-                  />
+                              <div
+                class="project-carousel"
+                data-carousel
+                aria-roledescription="carousel"
+                aria-label="OncoReconcile AI screenshots"
+              >
+                <div class="project-carousel__viewport project-card__media" tabindex="0" role="button" aria-label="View larger image">
+                  <ul class="project-carousel__track">
+                  <li class="project-carousel__slide is-active">
+                    <img
+                      class="project-carousel__image"
+                      src="assets/projects/oncore/00-collage.png"
+                      width="640"
+                      height="416"
+                      alt="OncoReconcile AI collage: reconciliation, review queue, patient journey, and dashboard"
+                    />
+                  </li>
+                  <li class="project-carousel__slide">
+                    <img
+                      class="project-carousel__image"
+                      src="assets/projects/oncore/01.png"
+                      width="640"
+                      height="416"
+                      alt="OncoReconcile AI homepage"
+                      loading="lazy"
+                    />
+                  </li>
+                  <li class="project-carousel__slide">
+                    <img
+                      class="project-carousel__image"
+                      src="assets/projects/oncore/02.png"
+                      width="640"
+                      height="416"
+                      alt="OncoReconcile single-record reconciliation result"
+                      loading="lazy"
+                    />
+                  </li>
+                  <li class="project-carousel__slide">
+                    <img
+                      class="project-carousel__image"
+                      src="assets/projects/oncore/03.png"
+                      width="640"
+                      height="416"
+                      alt="OncoReconcile review-required decision"
+                      loading="lazy"
+                    />
+                  </li>
+                  <li class="project-carousel__slide">
+                    <img
+                      class="project-carousel__image"
+                      src="assets/projects/oncore/04.png"
+                      width="640"
+                      height="416"
+                      alt="OncoReconcile human review queue"
+                      loading="lazy"
+                    />
+                  </li>
+                  <li class="project-carousel__slide">
+                    <img
+                      class="project-carousel__image"
+                      src="assets/projects/oncore/05.png"
+                      width="640"
+                      height="416"
+                      alt="OncoReconcile evaluation dashboard"
+                      loading="lazy"
+                    />
+                  </li>
+                  <li class="project-carousel__slide">
+                    <img
+                      class="project-carousel__image"
+                      src="assets/projects/oncore/06.png"
+                      width="640"
+                      height="416"
+                      alt="OncoReconcile enterprise patient journey"
+                      loading="lazy"
+                    />
+                  </li>
+                  <li class="project-carousel__slide">
+                    <img
+                      class="project-carousel__image"
+                      src="assets/projects/oncore/07.png"
+                      width="640"
+                      height="416"
+                      alt="OncoReconcile executive dashboard"
+                      loading="lazy"
+                    />
+                  </li>
+                  <li class="project-carousel__slide">
+                    <img
+                      class="project-carousel__image"
+                      src="assets/projects/oncore/08.png"
+                      width="640"
+                      height="416"
+                      alt="OncoReconcile coding system alignment"
+                      loading="lazy"
+                    />
+                  </li>
+                  </ul>
+                <button type="button" class="project-carousel__btn project-carousel__btn--prev" aria-label="Previous image">&#8249;</button>
+                <button type="button" class="project-carousel__btn project-carousel__btn--next" aria-label="Next image">&#8250;</button>
+                <div class="project-carousel__dots" role="tablist" aria-label="Choose image"></div>
                 </div>
+              </div>
+                <div class="project-card__body">
+                  <h3 class="project-card__title">
+                    OncoReconcile AI (A web app for normalizing disease, gene, and
+                    variant names and scoring reconciliation confidence)
+                  </h3>
+                  <ul class="project-card__tags">
+                    <li><span class="project-tag">Python</span></li>
+                    <li><span class="project-tag">FastAPI</span></li>
+                    <li><span class="project-tag">React</span></li>
+                    <li><span class="project-tag">Tailwind CSS</span></li>
+                    <li><span class="project-tag">Oncology</span></li>
+                  </ul>
+                  <p class="project-card__desc">
+                    Platform for normalizing disease, gene, and variant names with curated
+                    catalogs and evidence from APIs (ClinVar, CIViC, MyVariant), plus
+                    human-governed review for difficult cases. Also offers patient journey
+                    analytics and FHIR/OMOP JSON export prototypes.
+                  </p>
+                  <div class="project-card__links">
+                    <a
+                      class="project-pill"
+                      href="https://github.com/oncoreconcile-ai/oncoreconcile-ai/tree/enterprise-patient-journey-demo"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      >🔗 github</a
+                    >
+                  </div>
+                </div>
+              </article>
+            </li>
+            <li>
+              <article class="project-card">
+                              <div
+                class="project-carousel"
+                data-carousel
+                aria-roledescription="carousel"
+                aria-label="PageRank project media"
+              >
+                <div class="project-carousel__viewport project-card__media" tabindex="0" role="button" aria-label="View larger image">
+                  <ul class="project-carousel__track">
+                  <li class="project-carousel__slide is-active">
+                    <img
+                      class="project-carousel__image"
+                      src="assets/projects/pagerank/01.gif"
+                      width="640"
+                      height="416"
+                      alt="PageRank and HITS demo: graph and bar chart"
+                    />
+                  </li>
+                  </ul>
+                </div>
+              </div>
                 <div class="project-card__body">
                   <h3 class="project-card__title">
                     Exploration and Implementation of Web Page Ranking Algorithms: PageRank,
@@ -236,7 +475,7 @@
                       href="https://github.com/michaeliuedu/pagerank-hits"
                       target="_blank"
                       rel="noopener noreferrer"
-                      >github</a
+                      >🔗 github</a
                     >
                   </div>
                 </div>
@@ -244,16 +483,26 @@
             </li>
             <li>
               <article class="project-card">
-                <!-- Media: assets/projects/autonomous-driving.png -->
-                <div class="project-card__media">
-                  <img
-                    class="project-card__image"
-                    src="assets/projects/autonomous-driving.png"
-                    width="640"
-                    height="416"
-                    alt="research poster: autonomous vehicle control with sac and imitation learning"
-                  />
+                              <div
+                class="project-carousel"
+                data-carousel
+                aria-roledescription="carousel"
+                aria-label="Autonomous driving project media"
+              >
+                <div class="project-carousel__viewport project-card__media" tabindex="0" role="button" aria-label="View larger image">
+                  <ul class="project-carousel__track">
+                  <li class="project-carousel__slide is-active">
+                    <img
+                      class="project-carousel__image"
+                      src="assets/projects/autonomous/01.png"
+                      width="640"
+                      height="416"
+                      alt="Research poster: autonomous vehicle control with SAC and imitation learning"
+                    />
+                  </li>
+                  </ul>
                 </div>
+              </div>
                 <div class="project-card__body">
                   <h3 class="project-card__title">
                     Autonomous Vehicle Control: Imitation Learning and Soft Actor-Critic Integration
@@ -276,7 +525,7 @@
                       href="https://github.com/michaeliuedu/carla-sac"
                       target="_blank"
                       rel="noopener noreferrer"
-                      >github</a
+                      >🔗 github</a
                     >
                   </div>
                 </div>
@@ -284,16 +533,39 @@
             </li>
             <li>
               <article class="project-card">
-                <!-- Media: assets/projects/leapasl.png -->
-                <div class="project-card__media">
-                  <img
-                    class="project-card__image"
-                    src="assets/projects/leapasl.png"
-                    width="640"
-                    height="416"
-                    alt="leapasl: leap motion detection ui and model pipeline diagram"
-                  />
+                              <div
+                class="project-carousel"
+                data-carousel
+                aria-roledescription="carousel"
+                aria-label="LeapASL screenshots"
+              >
+                <div class="project-carousel__viewport project-card__media" tabindex="0" role="button" aria-label="View larger image">
+                  <ul class="project-carousel__track">
+                  <li class="project-carousel__slide is-active">
+                    <img
+                      class="project-carousel__image"
+                      src="assets/projects/leapasl/01.png"
+                      width="640"
+                      height="416"
+                      alt="LeapASL: Leap Motion detection UI and model pipeline diagram"
+                    />
+                  </li>
+                  <li class="project-carousel__slide">
+                    <img
+                      class="project-carousel__image"
+                      src="assets/projects/leapasl/02.jpg"
+                      width="640"
+                      height="416"
+                      alt="ASL alphabet reference chart used by LeapASL"
+                      loading="lazy"
+                    />
+                  </li>
+                  </ul>
+                <button type="button" class="project-carousel__btn project-carousel__btn--prev" aria-label="Previous image">&#8249;</button>
+                <button type="button" class="project-carousel__btn project-carousel__btn--next" aria-label="Next image">&#8250;</button>
+                <div class="project-carousel__dots" role="tablist" aria-label="Choose image"></div>
                 </div>
+              </div>
                 <div class="project-card__body">
                   <h3 class="project-card__title">
                     LeapASL (A realtime ASL gesture recognition and translation interface based on
@@ -318,7 +590,7 @@
                       href="https://github.com/michaeliuedu/leap-asl"
                       target="_blank"
                       rel="noopener noreferrer"
-                      >github</a
+                      >🔗 github</a
                     >
                   </div>
                 </div>
@@ -326,16 +598,49 @@
             </li>
             <li>
               <article class="project-card">
-                <!-- Media: assets/projects/flaurapedia.png -->
-                <div class="project-card__media">
-                  <img
-                    class="project-card__image"
-                    src="assets/projects/flaurapedia.png"
-                    width="640"
-                    height="416"
-                    alt="flaurapedia app: learn, create, and browse plant screens"
-                  />
+                              <div
+                class="project-carousel"
+                data-carousel
+                aria-roledescription="carousel"
+                aria-label="Flaurapedia project media"
+              >
+                <div class="project-carousel__viewport project-card__media" tabindex="0" role="button" aria-label="View larger image">
+                  <ul class="project-carousel__track">
+                  <li class="project-carousel__slide is-active">
+                    <img
+                      class="project-carousel__image"
+                      src="assets/projects/flaurapedia/01.png"
+                      width="640"
+                      height="416"
+                      alt="Flaurapedia app: learn, create, and browse plant screens"
+                    />
+                  </li>
+                  <li class="project-carousel__slide">
+                    <img
+                      class="project-carousel__image"
+                      src="assets/projects/flaurapedia/05.jpg"
+                      width="640"
+                      height="416"
+                      alt="Flaurapedia login screen with Firebase authentication console"
+                      loading="lazy"
+                    />
+                  </li>
+                  <li class="project-carousel__slide">
+                    <img
+                      class="project-carousel__image"
+                      src="assets/projects/flaurapedia/07.jpg"
+                      width="640"
+                      height="416"
+                      alt="Flaurapedia login UI with Firebase realtime database"
+                      loading="lazy"
+                    />
+                  </li>
+                  </ul>
+                <button type="button" class="project-carousel__btn project-carousel__btn--prev" aria-label="Previous image">&#8249;</button>
+                <button type="button" class="project-carousel__btn project-carousel__btn--next" aria-label="Next image">&#8250;</button>
+                <div class="project-carousel__dots" role="tablist" aria-label="Choose image"></div>
                 </div>
+              </div>
                 <div class="project-card__body">
                   <h3 class="project-card__title">
                     Flaurapedia (An android application for plant identification and blogging)
@@ -359,21 +664,21 @@
                       href="https://github.com/michaeliuedu/flaurapedia"
                       target="_blank"
                       rel="noopener noreferrer"
-                      >github</a
+                      >🔗 github</a
                     >
                     <a
                       class="project-pill"
                       href="https://www.congressionalappchallenge.us/21-tx24/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      >congressional app challenge page</a
+                      >🔗 congressional app challenge page</a
                     >
                     <a
                       class="project-pill"
                       href="https://www.youtube.com/watch?v=5mt3Dp_T5Wg"
                       target="_blank"
                       rel="noopener noreferrer"
-                      >youtube demo</a
+                      >🔗 youtube demo</a
                     >
                   </div>
                 </div>
@@ -381,16 +686,69 @@
             </li>
             <li>
               <article class="project-card">
-                <!-- Media: assets/projects/volunteen.jpg (stitched map + profile screenshots) -->
-                <div class="project-card__media">
-                  <img
-                    class="project-card__image"
-                    src="assets/projects/volunteen.jpg"
-                    width="640"
-                    height="416"
-                    alt="volunteen app: find opportunities map and profile screens"
-                  />
+                              <div
+                class="project-carousel"
+                data-carousel
+                aria-roledescription="carousel"
+                aria-label="VolunTEEN screenshots"
+              >
+                <div class="project-carousel__viewport project-card__media" tabindex="0" role="button" aria-label="View larger image">
+                  <ul class="project-carousel__track">
+                  <li class="project-carousel__slide is-active">
+                    <img
+                      class="project-carousel__image"
+                      src="assets/projects/volunteen/00.png"
+                      width="640"
+                      height="416"
+                      alt="VolunTEEN app overview: map and profile screens"
+                    />
+                  </li>
+                  <li class="project-carousel__slide">
+                    <img
+                      class="project-carousel__image"
+                      src="assets/projects/volunteen/01.png"
+                      width="640"
+                      height="416"
+                      alt="VolunTEEN sign-up screen"
+                      loading="lazy"
+                    />
+                  </li>
+                  <li class="project-carousel__slide">
+                    <img
+                      class="project-carousel__image"
+                      src="assets/projects/volunteen/02.png"
+                      width="640"
+                      height="416"
+                      alt="VolunTEEN create opportunities screen"
+                      loading="lazy"
+                    />
+                  </li>
+                  <li class="project-carousel__slide">
+                    <img
+                      class="project-carousel__image"
+                      src="assets/projects/volunteen/03.png"
+                      width="640"
+                      height="416"
+                      alt="VolunTEEN find opportunities map"
+                      loading="lazy"
+                    />
+                  </li>
+                  <li class="project-carousel__slide">
+                    <img
+                      class="project-carousel__image"
+                      src="assets/projects/volunteen/04.png"
+                      width="640"
+                      height="416"
+                      alt="VolunTEEN profile and hours screen"
+                      loading="lazy"
+                    />
+                  </li>
+                  </ul>
+                <button type="button" class="project-carousel__btn project-carousel__btn--prev" aria-label="Previous image">&#8249;</button>
+                <button type="button" class="project-carousel__btn project-carousel__btn--next" aria-label="Next image">&#8250;</button>
+                <div class="project-carousel__dots" role="tablist" aria-label="Choose image"></div>
                 </div>
+              </div>
                 <div class="project-card__body">
                   <h3 class="project-card__title">
                     VolunTEEN (A Flutter-based volunteering platform with Firebase authentication
@@ -413,21 +771,21 @@
                       href="https://github.com/solbell2/volunTEEN"
                       target="_blank"
                       rel="noopener noreferrer"
-                      >github</a
+                      >🔗 github</a
                     >
                     <a
                       class="project-pill"
                       href="https://devpost.com/software/volunteen-7s5nmj"
                       target="_blank"
                       rel="noopener noreferrer"
-                      >devpost</a
+                      >🔗 devpost</a
                     >
                     <a
                       class="project-pill"
                       href="https://www.youtube.com/watch?v=icZ8hjPbFew"
                       target="_blank"
                       rel="noopener noreferrer"
-                      >youtube demo</a
+                      >🔗 youtube demo</a
                     >
                   </div>
                 </div>
@@ -435,16 +793,26 @@
             </li>
             <li>
               <article class="project-card">
-                <!-- Media: assets/projects/plotter.png -->
-                <div class="project-card__media">
-                  <img
-                    class="project-card__image"
-                    src="assets/projects/plotter.png"
-                    width="640"
-                    height="416"
-                    alt="pen plotter output: four bitmap sketches"
-                  />
+                              <div
+                class="project-carousel"
+                data-carousel
+                aria-roledescription="carousel"
+                aria-label="Pen plotter project media"
+              >
+                <div class="project-carousel__viewport project-card__media" tabindex="0" role="button" aria-label="View larger image">
+                  <ul class="project-carousel__track">
+                  <li class="project-carousel__slide is-active">
+                    <img
+                      class="project-carousel__image"
+                      src="assets/projects/plotter/01.png"
+                      width="640"
+                      height="416"
+                      alt="Pen plotter output: four bitmap sketches"
+                    />
+                  </li>
+                  </ul>
                 </div>
+              </div>
                 <div class="project-card__body">
                   <h3 class="project-card__title">
                     Bitmap-to-Sketch Pen Plotter Using Raspberry Pi, Python Modules, and Servo
@@ -465,16 +833,89 @@
             </li>
             <li>
               <article class="project-card">
-                <!-- Media: assets/projects/plotter.png -->
-                <div class="project-card__media">
-                  <img
-                    class="project-card__image"
-                    src="assets/projects/unity.png"
-                    width="640"
-                    height="416"
-                    alt="pen plotter output: four bitmap sketches"
-                  />
+                              <div
+                class="project-carousel"
+                data-carousel
+                aria-roledescription="carousel"
+                aria-label="Unity games screenshots"
+              >
+                <div class="project-carousel__viewport project-card__media" tabindex="0" role="button" aria-label="View larger image">
+                  <ul class="project-carousel__track">
+                  <li class="project-carousel__slide is-active">
+                    <img
+                      class="project-carousel__image"
+                      src="assets/projects/unity-games/00-itch.png"
+                      width="640"
+                      height="416"
+                      alt="Collage of Unity game screenshots from itch.io"
+                    />
+                  </li>
+                  <li class="project-carousel__slide">
+                    <img
+                      class="project-carousel__image"
+                      src="assets/projects/unity-games/01.png"
+                      width="640"
+                      height="416"
+                      alt="Pyramid Scheming gameplay screenshot"
+                      loading="lazy"
+                    />
+                  </li>
+                  <li class="project-carousel__slide">
+                    <img
+                      class="project-carousel__image"
+                      src="assets/projects/unity-games/03.png"
+                      width="640"
+                      height="416"
+                      alt="Trials of the Forest cover art"
+                      loading="lazy"
+                    />
+                  </li>
+                  <li class="project-carousel__slide">
+                    <img
+                      class="project-carousel__image"
+                      src="assets/projects/unity-games/04.png"
+                      width="640"
+                      height="416"
+                      alt="Trials of the Forest gameplay screenshot"
+                      loading="lazy"
+                    />
+                  </li>
+                  <li class="project-carousel__slide">
+                    <img
+                      class="project-carousel__image"
+                      src="assets/projects/unity-games/05.png"
+                      width="640"
+                      height="416"
+                      alt="Trials of the Forest gameplay screenshot"
+                      loading="lazy"
+                    />
+                  </li>
+                  <li class="project-carousel__slide">
+                    <img
+                      class="project-carousel__image"
+                      src="assets/projects/unity-games/06.png"
+                      width="640"
+                      height="416"
+                      alt="Trials of the Forest gameplay screenshot"
+                      loading="lazy"
+                    />
+                  </li>
+                  <li class="project-carousel__slide">
+                    <img
+                      class="project-carousel__image"
+                      src="assets/projects/unity-games/08.png"
+                      width="640"
+                      height="416"
+                      alt="Pyramid Scheming gameplay screenshot"
+                      loading="lazy"
+                    />
+                  </li>
+                  </ul>
+                <button type="button" class="project-carousel__btn project-carousel__btn--prev" aria-label="Previous image">&#8249;</button>
+                <button type="button" class="project-carousel__btn project-carousel__btn--next" aria-label="Next image">&#8250;</button>
+                <div class="project-carousel__dots" role="tablist" aria-label="Choose image"></div>
                 </div>
+              </div>
                 <div class="project-card__body">
                   <h3 class="project-card__title">
                     Old Games I Made for Fun!
@@ -487,7 +928,7 @@
                     A collection of old 3D platformer games in high school that I made for fun
                     using Unity and C# in my free time. Likely buggy and unoptimized
                     but I had fun making them and learned a lot about game development. Check them
-                    out at my itch.io!
+                    out and play them in your browser at my Itch.io!
                   </p>
                   <div class="project-card__links">
                     <a
@@ -495,7 +936,7 @@
                       href="https://beawr.itch.io/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      >itch.io</a
+                      >🔗 itch.io</a
                     >
                   </div>
                 </div>    
@@ -532,7 +973,7 @@
       </p>
     </footer>
 
-    <button type="button" id="back-to-top" class="back-to-top" aria-label="Back to top">BACK TO TOP</button>
+    <button type="button" id="back-to-top" class="back-to-top" aria-label="Back to top">↑</button>
 
     <script src="assets/js/main.js"></script>
   </body>

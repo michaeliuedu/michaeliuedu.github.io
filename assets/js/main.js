@@ -593,9 +593,17 @@
     var backdrop = document.createElement("div");
     backdrop.className = "image-lightbox";
     backdrop.setAttribute("hidden", "");
+    var chevronPrev =
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="15 6 9 12 15 18"></polyline></svg>';
+    var chevronNext =
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="9 6 15 12 9 18"></polyline></svg>';
     backdrop.innerHTML =
-      '<button type="button" class="image-lightbox__nav image-lightbox__nav--prev" aria-label="Previous image">&#8249;</button>' +
-      '<button type="button" class="image-lightbox__nav image-lightbox__nav--next" aria-label="Next image">&#8250;</button>' +
+      '<button type="button" class="image-lightbox__nav image-lightbox__nav--prev" aria-label="Previous image">' +
+      chevronPrev +
+      "</button>" +
+      '<button type="button" class="image-lightbox__nav image-lightbox__nav--next" aria-label="Next image">' +
+      chevronNext +
+      "</button>" +
       '<div class="image-lightbox__dialog" role="dialog" aria-modal="true" aria-label="Enlarged project image">' +
       '<button type="button" class="image-lightbox__close" aria-label="Close">&times;</button>' +
       '<img class="image-lightbox__img" alt="" />' +
@@ -737,7 +745,11 @@
 
       if (viewport) {
         viewport.addEventListener("click", function (event) {
-          if (event.target.closest(".project-carousel__btn, .project-carousel__dot")) {
+          if (
+            event.target.closest(
+              ".project-carousel__btn, .project-carousel__dot"
+            )
+          ) {
             return;
           }
           openLightbox(carousel, viewport);

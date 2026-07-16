@@ -607,12 +607,14 @@
       '<div class="image-lightbox__dialog" role="dialog" aria-modal="true" aria-label="Enlarged project image">' +
       '<button type="button" class="image-lightbox__close" aria-label="Close">&times;</button>' +
       '<img class="image-lightbox__img" alt="" />' +
+      '<video class="image-lightbox__video" controls muted loop playsinline hidden></video>' +
       "</div>" +
       '<div class="image-lightbox__progress" role="tablist" aria-label="Carousel progress" hidden></div>';
     document.body.appendChild(backdrop);
 
     var dialog = backdrop.querySelector(".image-lightbox__dialog");
     var lbImg = backdrop.querySelector(".image-lightbox__img");
+    var lbVideo = backdrop.querySelector(".image-lightbox__video");
     var closeBtn = backdrop.querySelector(".image-lightbox__close");
     var lbPrev = backdrop.querySelector(".image-lightbox__nav--prev");
     var lbNext = backdrop.querySelector(".image-lightbox__nav--next");
@@ -625,6 +627,9 @@
       backdrop.classList.remove("is-open");
       backdrop.setAttribute("hidden", "");
       document.body.classList.remove("is-lightbox-open");
+      lbVideo.pause();
+      lbVideo.removeAttribute("src");
+      lbVideo.load();
       activeCarousel = null;
       if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
       lastFocus = null;
@@ -661,8 +666,26 @@
         ".project-carousel__slide.is-active .project-carousel__image"
       );
       if (!active) return;
-      lbImg.src = active.currentSrc || active.src;
-      lbImg.alt = active.alt || "Project image";
+      if (active.tagName === "VIDEO") {
+        lbImg.hidden = true;
+        lbVideo.hidden = false;
+        lbVideo.src =
+          active.currentSrc ||
+          active.src ||
+          (active.querySelector("source") && active.querySelector("source").src);
+        lbVideo.poster = active.poster || "";
+        lbVideo.currentTime = 0;
+        var playPromise = lbVideo.play();
+        if (playPromise && typeof playPromise.catch === "function") {
+          playPromise.catch(function () {});
+        }
+      } else {
+        lbVideo.pause();
+        lbVideo.hidden = true;
+        lbImg.hidden = false;
+        lbImg.src = active.currentSrc || active.src;
+        lbImg.alt = active.alt || "Project image";
+      }
       var multi = carousel.querySelectorAll(".project-carousel__slide").length > 1;
       lbPrev.hidden = !multi;
       lbNext.hidden = !multi;
@@ -686,7 +709,20 @@
       if (!slides.length) return;
       var next = ((index % slides.length) + slides.length) % slides.length;
       slides.forEach(function (slide, i) {
-        slide.classList.toggle("is-active", i === next);
+        var isActive = i === next;
+        slide.classList.toggle("is-active", isActive);
+        var video = slide.querySelector("video");
+        if (video) {
+          if (isActive) {
+            video.currentTime = 0;
+            var playPromise = video.play();
+            if (playPromise && typeof playPromise.catch === "function") {
+              playPromise.catch(function () {});
+            }
+          } else {
+            video.pause();
+          }
+        }
       });
       var dots = carousel.querySelectorAll(".project-carousel__dot");
       dots.forEach(function (dot, i) {
@@ -767,6 +803,8 @@
           }
         });
       }
+
+      goTo(carousel, currentIndex(carousel));
     });
 
     closeBtn.addEventListener("click", function (event) {

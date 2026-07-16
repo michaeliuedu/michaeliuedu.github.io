@@ -809,6 +809,23 @@ html[data-theme="dark"] .exp-group__title {
   transition: transform 0.4s ease;
 }
 
+.project-carousel__label {
+  position: absolute;
+  top: 0.7rem;
+  left: 0.7rem;
+  z-index: 2;
+  padding: 0.32rem 0.55rem;
+  background: rgba(165, 28, 48, 0.92);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.22);
+  pointer-events: none;
+}
+
 .project-carousel__btn {
   position: absolute;
   top: 50%;
@@ -972,7 +989,8 @@ html[data-theme="dark"] .exp-group__title {
   background: transparent;
 }
 
-.image-lightbox__img {
+.image-lightbox__img,
+.image-lightbox__video {
   display: block;
   max-width: 100%;
   max-height: 88vh;
@@ -981,6 +999,19 @@ html[data-theme="dark"] .exp-group__title {
   border-radius: var(--radius-sm);
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
   background: var(--color-bg);
+}
+
+.image-lightbox__video {
+  width: min(96vw, 68rem);
+  height: auto;
+  aspect-ratio: 20 / 13;
+  object-fit: contain;
+  background: #000;
+}
+
+.image-lightbox__img[hidden],
+.image-lightbox__video[hidden] {
+  display: none;
 }
 
 .image-lightbox__close {

@@ -216,6 +216,36 @@
     });
   }
 
+  (function initHeaderScroll() {
+    var header = document.querySelector(".site-header");
+    if (!header) return;
+
+    var ticking = false;
+    var compactAfter = 40;
+
+    var update = function () {
+      if (window.scrollY > compactAfter) {
+        header.classList.add("is-compact");
+      } else {
+        header.classList.remove("is-compact");
+      }
+      ticking = false;
+    };
+
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (!ticking) {
+          window.requestAnimationFrame(update);
+          ticking = true;
+        }
+      },
+      { passive: true }
+    );
+
+    update();
+  })();
+
   (function initSectionNav() {
     if (!nav) return;
 
@@ -471,80 +501,6 @@
     });
 
     document.addEventListener("click", clearSkillActive);
-  }
-
-  var typewriterLines = document.querySelectorAll(".typewriter-line");
-  if (typewriterLines.length) {
-    var typeReduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-    var typeLines = Array.prototype.slice.call(typewriterLines);
-    var charDelay = 26;
-    var linePause = 140;
-    var interestList = document.querySelector(".interest-list");
-
-    if (interestList) interestList.classList.add("js-typewriter");
-
-    var revealLineShell = function (el) {
-      var item = el.closest("li");
-      if (item) {
-        item.classList.add("is-typing-line");
-      }
-    };
-
-    var finishLineShell = function (el) {
-      var item = el.closest("li");
-      if (item) {
-        item.classList.remove("is-typing-line");
-        item.classList.add("is-typed");
-      }
-    };
-
-    var finishTypewriter = function () {
-      typeLines.forEach(function (el) {
-        finishLineShell(el);
-      });
-    };
-
-    var runTypewriter = function (lineIndex) {
-      if (lineIndex >= typeLines.length) {
-        finishTypewriter();
-        return;
-      }
-
-      var el = typeLines[lineIndex];
-      var text = el.getAttribute("data-text") || "";
-      var charIndex = 0;
-
-      revealLineShell(el);
-      el.classList.add("is-typing");
-      el.textContent = "";
-
-      var typeChar = function () {
-        if (charIndex < text.length) {
-          el.textContent = text.slice(0, charIndex + 1);
-          charIndex += 1;
-          window.setTimeout(typeChar, charDelay);
-          return;
-        }
-
-        el.classList.remove("is-typing");
-        finishLineShell(el);
-        window.setTimeout(function () {
-          runTypewriter(lineIndex + 1);
-        }, linePause);
-      };
-
-      typeChar();
-    };
-
-    if (typeReduce.matches) {
-      typeLines.forEach(function (el) {
-        el.textContent = el.getAttribute("data-text") || "";
-        finishLineShell(el);
-      });
-      finishTypewriter();
-    } else {
-      runTypewriter(0);
-    }
   }
 
   var revealLists = document.querySelectorAll(".project-showcase");

@@ -22,7 +22,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;1,8..60,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Libre+Franklin:wght@500;600;700&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap"
       rel="stylesheet"
     />
     <link
@@ -203,7 +203,7 @@
           </div>
           <aside class="hero__aside" aria-labelledby="interests-heading">
             <h2 id="interests-heading" class="aside-heading">Interests</h2>
-            <ul class="interest-list">
+            <ul class="interest-list js-reveal">
               <li>Machine Learning &amp; Reinforcement Learning</li>
               <li>Autonomous Systems</li>
               <li>Mobile &amp; Web Development</li>
@@ -215,30 +215,42 @@
       </section>
 
       <div class="content-wrap">
-        <section class="section" id="about" aria-labelledby="about-heading">
+        <section class="section js-reveal" id="about" aria-labelledby="about-heading">
           <h2 id="about-heading" class="section__title">About Me</h2>
           <div class="section__body">
             <p>
-              My name is Michael Liu, I am an undergraduate studying computer science at
-              <strong>Carnegie Mellon University</strong>. I am particularly interested in
-              <strong>computer systems</strong>, <strong>competitive programming</strong>, and building
-              <strong>autonomous systems</strong>. Outside of computer science, I fence (competitively
-              for about a decade now), enjoy spending time with friends and family, and embark on
-              projects that challenge me.
+              <span class="about-line"
+                >My name is Michael Liu, I am an undergraduate studying computer science at
+                <strong>Carnegie Mellon University</strong>.</span
+              >
+              <span class="about-line"
+                >I am particularly interested in
+                <strong>computer systems</strong>, <strong>competitive programming</strong>, and building
+                <strong>autonomous systems</strong>.</span
+              >
+              <span class="about-line"
+                >Outside of computer science, I fence (competitively for about a decade now), enjoy
+                spending time with friends and family, and embark on projects that challenge me.</span
+              >
             </p>
 
             <p>
-              Currently, I am a <strong>research assistant</strong> in the robotics department at
-              Carnegie Mellon University, a <strong>web developer</strong> for
-              <a href="https://scottylabs.org" target="_blank" rel="noopener noreferrer"><strong>ScottyLabs</strong></a>
-              as part of the tech team for
-              <a href="https://cmueats.com" target="_blank" rel="noopener noreferrer"><strong>CMUEats.com</strong></a>, and 
-              a <strong>teaching assistant</strong> for CMU's  <strong>Introduction to Computer Science</strong> course.
+              <span class="about-line"
+                >Currently, I am a <strong>research assistant</strong> in the robotics department at
+                Carnegie Mellon University, a <strong>web developer</strong> for
+                <a href="https://scottylabs.org" target="_blank" rel="noopener noreferrer"
+                  ><strong>ScottyLabs</strong></a
+                >
+                as part of the tech team for
+                <a href="https://cmueats.com" target="_blank" rel="noopener noreferrer"
+                  ><strong>CMUEats.com</strong></a
+                >, and a <strong>teaching assistant</strong> for CMU's
+                <strong>Introduction to Computer Science</strong> course.</span
+              >
             </p>
 
-            <div class="skills" aria-labelledby="skills-subheading">
-              <h3 id="skills-subheading" class="skills__title">Relevant Skills</h3>
-              <ul class="skill-icons" aria-label="Relevant skills and technologies">
+            <div class="skills" aria-label="Relevant skills">
+              <ul class="skill-icons js-reveal" aria-label="Relevant skills and technologies">
                 <li data-name="Python"><i class="devicon-python-plain colored" role="img" aria-label="Python"></i></li>
                 <li data-name="C++"><i class="devicon-cplusplus-plain colored" role="img" aria-label="C++"></i></li>
                 <li data-name="Java"><i class="devicon-java-plain colored" role="img" aria-label="Java"></i></li>
@@ -391,12 +403,12 @@
                   </p>
                   <div class="project-card__links">
                     <a
-                      class="project-pill"
+                      class="project-link project-link--github"
                       href="https://github.com/oncoreconcile-ai/oncoreconcile-ai/tree/enterprise-patient-journey-demo"
                       target="_blank"
                       rel="noopener noreferrer"
-                      >GitHub</a
-                    >
+                      aria-label="GitHub"
+                      ><svg class="project-link__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
                   </div>
                 </div>
               </article>
@@ -442,12 +454,12 @@
                   </p>
                   <div class="project-card__links">
                     <a
-                      class="project-pill"
+                      class="project-link project-link--github"
                       href="https://github.com/michaeliuedu/pagerank-hits"
                       target="_blank"
                       rel="noopener noreferrer"
-                      >GitHub</a
-                    >
+                      aria-label="GitHub"
+                      ><svg class="project-link__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
                   </div>
                 </div>
               </article>
@@ -539,12 +551,12 @@
                   </p>
                   <div class="project-card__links">
                     <a
-                      class="project-pill"
+                      class="project-link project-link--github"
                       href="https://github.com/michaeliuedu/carla-sac"
                       target="_blank"
                       rel="noopener noreferrer"
-                      >GitHub</a
-                    >
+                      aria-label="GitHub"
+                      ><svg class="project-link__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
                   </div>
                 </div>
               </article>
@@ -628,12 +640,12 @@
                   </p>
                   <div class="project-card__links">
                     <a
-                      class="project-pill"
+                      class="project-link project-link--github"
                       href="https://github.com/michaeliuedu/leap-asl"
                       target="_blank"
                       rel="noopener noreferrer"
-                      >GitHub</a
-                    >
+                      aria-label="GitHub"
+                      ><svg class="project-link__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
                   </div>
                 </div>
               </article>
@@ -716,26 +728,32 @@
                   </p>
                   <div class="project-card__links">
                     <a
-                      class="project-pill"
+                      class="project-link project-link--github"
                       href="https://github.com/michaeliuedu/flaurapedia"
                       target="_blank"
                       rel="noopener noreferrer"
-                      >GitHub</a
-                    >
+                      aria-label="GitHub"
+                      ><svg class="project-link__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
                     <a
-                      class="project-pill"
+                      class="project-link project-link--cac"
                       href="https://www.congressionalappchallenge.us/21-tx24/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      >Congressional App Challenge Page</a
-                    >
+                      aria-label="Congressional App Challenge"
+                      ><img
+                        class="project-link__icon project-link__logo"
+                        src="assets/projects/icons/cac.png"
+                        width="24"
+                        height="24"
+                        alt=""
+                    /></a>
                     <a
-                      class="project-pill"
+                      class="project-link project-link--youtube"
                       href="https://www.youtube.com/watch?v=5mt3Dp_T5Wg"
                       target="_blank"
                       rel="noopener noreferrer"
-                      >YouTube Demo</a
-                    >
+                      aria-label="YouTube Demo"
+                      ><svg class="project-link__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M23.498 6.186a2.997 2.997 0 00-2.11-2.122C19.505 3.546 12 3.546 12 3.546s-7.505 0-9.388.518A2.997 2.997 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a2.997 2.997 0 002.11 2.122c1.883.518 9.388.518 9.388.518s7.505 0 9.388-.518a2.997 2.997 0 002.11-2.122C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
                   </div>
                 </div>
               </article>
@@ -827,26 +845,26 @@
                   </p>
                   <div class="project-card__links">
                     <a
-                      class="project-pill"
+                      class="project-link project-link--github"
                       href="https://github.com/solbell2/volunTEEN"
                       target="_blank"
                       rel="noopener noreferrer"
-                      >GitHub</a
-                    >
+                      aria-label="GitHub"
+                      ><svg class="project-link__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
                     <a
-                      class="project-pill"
+                      class="project-link project-link--devpost"
                       href="https://devpost.com/software/volunteen-7s5nmj"
                       target="_blank"
                       rel="noopener noreferrer"
-                      >Devpost</a
-                    >
+                      aria-label="Devpost"
+                      ><svg class="project-link__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6.002 1.61L0 12.004 6.002 22.39h11.996L24 12.004 17.998 1.61zm1.593 4.084h3.947c3.605 0 6.276 1.695 6.276 6.31 0 4.426-2.62 6.302-6.476 6.302H7.595zm2.517 2.449v7.714h1.241c2.641 0 3.839-1.392 3.839-3.883 0-2.548-1.1-3.831-3.766-3.831z"/></svg></a>
                     <a
-                      class="project-pill"
+                      class="project-link project-link--youtube"
                       href="https://www.youtube.com/watch?v=icZ8hjPbFew"
                       target="_blank"
                       rel="noopener noreferrer"
-                      >YouTube Demo</a
-                    >
+                      aria-label="YouTube Demo"
+                      ><svg class="project-link__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M23.498 6.186a2.997 2.997 0 00-2.11-2.122C19.505 3.546 12 3.546 12 3.546s-7.505 0-9.388.518A2.997 2.997 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a2.997 2.997 0 002.11 2.122c1.883.518 9.388.518 9.388.518s7.505 0 9.388-.518a2.997 2.997 0 002.11-2.122C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
                   </div>
                 </div>
               </article>
@@ -1053,12 +1071,12 @@
                   </p>
                   <div class="project-card__links">
                     <a
-                      class="project-pill"
+                      class="project-link project-link--itch"
                       href="https://beawr.itch.io/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      >itch.io</a
-                    >
+                      aria-label="itch.io"
+                      ><svg class="project-link__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3.12 1.5l-.7 2.8H.5v2.1c0 1.1.9 2 2 2h.1c.2 1.7 1.2 3.1 2.6 4l-.9 5.6H7l.6-3.8h8.8l.6 3.8h3.4l-.9-5.6c1.4-.9 2.4-2.3 2.6-4h.1c1.1 0 2-.9 2-2V4.3h-1.9l-.7-2.8zm2.1 2.1h13.56l.35 1.4H4.97zm-.42 4.2c0 .7.3 1.3.7 1.7-.1-.4-.1-.8-.1-1.2 0-.7.2-1.3.4-1.9-.6.3-1 .8-1 1.4zm14.6 0c0-.6-.4-1.1-1-1.4.2.6.4 1.2.4 1.9 0 .4 0 .8-.1 1.2.4-.4.7-1 .7-1.7zM8.2 10.3c.7 0 1.2.7 1.2 1.5S8.9 13.3 8.2 13.3 7 12.6 7 11.8s.5-1.5 1.2-1.5zm3.8 0c.7 0 1.2.7 1.2 1.5s-.5 1.5-1.2 1.5-1.2-.7-1.2-1.5.5-1.5 1.2-1.5zm3.8 0c.7 0 1.2.7 1.2 1.5s-.5 1.5-1.2 1.5-1.2-.7-1.2-1.5.5-1.5 1.2-1.5z"/></svg></a>
                   </div>
                 </div>    
               </article>

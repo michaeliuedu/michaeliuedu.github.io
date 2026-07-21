@@ -503,87 +503,226 @@
     document.addEventListener("click", clearSkillActive);
   }
 
-  var revealLists = document.querySelectorAll(".project-showcase");
   var prefersReduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-  if (revealLists.length) {
-    var reveal = function (item) {
-      item.classList.add("in-view");
-    };
+  var reveal = function (item) {
+    item.classList.add("in-view");
+  };
 
-    var hide = function (item) {
-      item.classList.remove("in-view");
-      item.style.removeProperty("--reveal-delay");
-    };
+  var hide = function (item) {
+    item.style.setProperty("--reveal-delay", "0s");
+    item.classList.remove("in-view");
+  };
 
-    var afterPaint = function (callback) {
-      window.requestAnimationFrame(function () {
-        window.requestAnimationFrame(callback);
+  var afterPaint = function (callback) {
+    window.requestAnimationFrame(function () {
+      window.requestAnimationFrame(callback);
+    });
+  };
+
+  var viewportH = function () {
+    return window.innerHeight || document.documentElement.clientHeight;
+  };
+
+  var isAboveViewportBottom = function (item) {
+    return item.getBoundingClientRect().top < viewportH();
+  };
+
+  var observeRevealItems = function (items, options) {
+    var opts = options || {};
+    var stagger = opts.stagger != null ? opts.stagger : 0.14;
+    var startDelay = opts.startDelay != null ? opts.startDelay : 0.06;
+    var threshold = opts.threshold != null ? opts.threshold : 0.12;
+    var rootMargin = opts.rootMargin || "0px 0px -8% 0px";
+    var once = !!opts.once;
+
+    if (prefersReduce.matches || !("IntersectionObserver" in window)) {
+      items.forEach(reveal);
+      return;
+    }
+
+    var visibleItems = [];
+    var belowFoldItems = [];
+
+    items.forEach(function (item) {
+      if (isAboveViewportBottom(item)) {
+        visibleItems.push(item);
+      } else {
+        belowFoldItems.push(item);
+      }
+    });
+
+    var scrollObserver = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.style.removeProperty("--reveal-delay");
+            reveal(entry.target);
+            if (once) scrollObserver.unobserve(entry.target);
+          } else if (!once) {
+            hide(entry.target);
+          }
+        });
+      },
+      { threshold: threshold, rootMargin: rootMargin }
+    );
+
+    belowFoldItems.forEach(function (item) {
+      scrollObserver.observe(item);
+    });
+
+    afterPaint(function () {
+      visibleItems.forEach(function (item) {
+        void item.offsetWidth;
       });
+
+      visibleItems.forEach(function (item, index) {
+        item.style.setProperty(
+          "--reveal-delay",
+          String(startDelay + index * stagger) + "s"
+        );
+        reveal(item);
+      });
+
+      if (once) return;
+
+      var entranceMs = visibleItems.length * Math.round(stagger * 1000) + 700;
+      window.setTimeout(function () {
+        visibleItems.forEach(function (item) {
+          scrollObserver.observe(item);
+        });
+      }, entranceMs);
+    });
+  };
+
+  /* About + skills: enter with stagger, pull out on leave, replay on return */
+  var observeReplayReveal = function (items, options) {
+    var opts = options || {};
+    var stagger = opts.stagger != null ? opts.stagger : 0.14;
+    var startDelay = opts.startDelay != null ? opts.startDelay : 0.06;
+    var threshold = opts.threshold != null ? opts.threshold : 0.12;
+    var rootMargin = opts.rootMargin || "0px 0px -6% 0px";
+
+    if (prefersReduce.matches || !("IntersectionObserver" in window)) {
+      items.forEach(reveal);
+      return;
+    }
+
+    var showItem = function (item, index, delayBase) {
+      item.style.setProperty(
+        "--reveal-delay",
+        String(delayBase + index * stagger) + "s"
+      );
+      reveal(item);
     };
 
-    var viewportH = function () {
-      return window.innerHeight || document.documentElement.clientHeight;
+    var pendingShow = [];
+    var flushScheduled = false;
+    var initialPass = true;
+
+    var flushShow = function () {
+      flushScheduled = false;
+      var batch = pendingShow.splice(0, pendingShow.length);
+      if (!batch.length) return;
+
+      batch.forEach(function (item) {
+        void item.offsetWidth;
+      });
+
+      var delayBase = initialPass ? startDelay : 0;
+      batch.forEach(function (item) {
+        var index = items.indexOf(item);
+        if (index < 0) index = 0;
+        showItem(item, index, delayBase);
+      });
+      initialPass = false;
     };
 
-    var isAboveViewportBottom = function (item) {
-      return item.getBoundingClientRect().top < viewportH();
-    };
+    var scrollObserver = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            if (entry.target.classList.contains("in-view")) return;
+            pendingShow.push(entry.target);
+            if (!flushScheduled) {
+              flushScheduled = true;
+              afterPaint(flushShow);
+            }
+          } else {
+            hide(entry.target);
+          }
+        });
+      },
+      { threshold: threshold, rootMargin: rootMargin }
+    );
 
-    revealLists.forEach(function (list) {
-      list.classList.add("js-reveal");
-      var items = list.querySelectorAll(":scope > li");
+    items.forEach(function (item) {
+      scrollObserver.observe(item);
+    });
+  };
+
+  var revealLists = document.querySelectorAll(
+    ".project-showcase, .interest-list"
+  );
+  revealLists.forEach(function (list) {
+    list.classList.add("js-reveal");
+    observeRevealItems(
+      Array.prototype.slice.call(list.querySelectorAll(":scope > li"))
+    );
+  });
+
+  var aboutSection = document.getElementById("about");
+  if (aboutSection) {
+    aboutSection.classList.add("js-reveal");
+    observeReplayReveal(
+      Array.prototype.slice.call(aboutSection.querySelectorAll(".about-line")),
+      {
+        stagger: 0.18,
+        startDelay: 0.12,
+        threshold: 0.12,
+        rootMargin: "0px 0px -8% 0px",
+      }
+    );
+
+    var skillList = aboutSection.querySelector(".skill-icons");
+    if (skillList) {
+      skillList.classList.add("js-reveal");
 
       if (prefersReduce.matches || !("IntersectionObserver" in window)) {
-        items.forEach(reveal);
-        return;
+        skillList.classList.add("in-view");
+      } else {
+        // Stay hidden on first paint even if above the fold; unlock after a real scroll.
+        var skillsUnlocked = false;
+        var skillsIntersecting = false;
+
+        var syncSkillsVisibility = function () {
+          if (skillsUnlocked && skillsIntersecting) {
+            skillList.classList.add("in-view");
+          } else {
+            skillList.classList.remove("in-view");
+          }
+        };
+
+        var skillObserver = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              skillsIntersecting = entry.isIntersecting;
+              syncSkillsVisibility();
+            });
+          },
+          { threshold: 0.15, rootMargin: "0px 0px -5% 0px" }
+        );
+        skillObserver.observe(skillList);
+
+        var onScrollUnlock = function () {
+          if (window.scrollY > 24) {
+            skillsUnlocked = true;
+            syncSkillsVisibility();
+            window.removeEventListener("scroll", onScrollUnlock);
+          }
+        };
+        window.addEventListener("scroll", onScrollUnlock, { passive: true });
       }
-
-      var visibleItems = [];
-      var belowFoldItems = [];
-
-      items.forEach(function (item) {
-        if (isAboveViewportBottom(item)) {
-          visibleItems.push(item);
-        } else {
-          belowFoldItems.push(item);
-        }
-      });
-
-      var scrollObserver = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-              entry.target.style.removeProperty("--reveal-delay");
-              reveal(entry.target);
-            } else {
-              hide(entry.target);
-            }
-          });
-        },
-        { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
-      );
-
-      belowFoldItems.forEach(function (item) {
-        scrollObserver.observe(item);
-      });
-
-      afterPaint(function () {
-        visibleItems.forEach(function (item, index) {
-          item.style.setProperty(
-            "--reveal-delay",
-            String(0.06 + index * 0.14) + "s"
-          );
-          reveal(item);
-        });
-
-        var entranceMs = visibleItems.length * 140 + 700;
-        window.setTimeout(function () {
-          visibleItems.forEach(function (item) {
-            scrollObserver.observe(item);
-          });
-        }, entranceMs);
-      });
-    });
+    }
   }
 
   (function initProjectCarousels() {

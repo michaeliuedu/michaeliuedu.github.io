@@ -86,21 +86,30 @@ html {
   }
 
   html.theme-transitioning::view-transition-old(root) {
-    animation: none;
+    animation: none !important;
     mix-blend-mode: normal;
     z-index: 1;
+    /* Keep old frame fully opaque until new circle covers it */
+    opacity: 1;
   }
 
   html.theme-transitioning::view-transition-new(root) {
-    animation: none;
+    animation: none !important;
     mix-blend-mode: normal;
     z-index: 9999;
+    /* Prevent default VT fade from fighting the circle clip */
+    opacity: 1;
+  }
+
+  html.theme-transitioning::view-transition-group(root) {
+    animation: none !important;
   }
 }
 
 /* Directional crimson page wipe (Home ↔ Experience ↔ Education)
    Forward = swipe right (enter from left, exit to right)
-   Back = swipe left (enter from right, exit to left) */
+   Back = swipe left (enter from right, exit to left)
+   Duration 0.4s must stay in sync with WIPE_MS in assets/js/main.js */
 html.page-wipe-pending::before {
   content: "";
   position: fixed;
@@ -199,11 +208,13 @@ html.page-wipe-pending::before {
   pointer-events: none;
   background: var(--splash-color, #12161a);
   clip-path: circle(0px at var(--splash-x, 50%) var(--splash-y, 50%));
-  transition: clip-path 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: clip-path 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: clip-path;
 }
 
 .theme-splash.is-expanding {
-  clip-path: circle(var(--splash-r, 150vmax) at var(--splash-x, 50%) var(--splash-y, 50%));
+  /* Slightly oversized so the circle fully covers corners before removal */
+  clip-path: circle(var(--splash-r, 160vmax) at var(--splash-x, 50%) var(--splash-y, 50%));
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -302,7 +313,7 @@ a:hover {
 .site-nav li,
 .header-actions {
   opacity: 0;
-  animation: header-stack-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: header-stack-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .site-logo {
@@ -525,7 +536,8 @@ html[data-theme="dark"] .theme-toggle__icon--moon {
 
 .hero__grid {
   display: grid;
-  grid-template-columns: minmax(0, 13.5rem) minmax(0, 1fr) minmax(0, 17.5rem);
+  /* auto first column so .hero__photo width growth pushes siblings */
+  grid-template-columns: auto minmax(0, 1fr) minmax(0, 17.5rem);
   gap: var(--space-lg);
   align-items: start;
 }
@@ -577,24 +589,34 @@ html[data-theme="dark"] .theme-toggle__icon--moon {
 .hero__meta,
 .hero__intro .social {
   opacity: 0;
-  animation: hero-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: hero-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .hero__name {
   opacity: 0;
-  animation: hero-name-in 0.95s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: hero-name-in 0.95s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .hero__aside {
   opacity: 0;
-  animation: hero-aside-in 0.95s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: hero-aside-in 0.95s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 /* Headshot last — soft fade + slight scale after the rest of the hero */
 .hero__photo {
+  --hero-photo-size: 13.5rem;
+  --hero-photo-hover: 17.25rem;
+  width: var(--hero-photo-size);
+  max-width: 100%;
   opacity: 0;
-  animation: hero-photo-fade 1.05s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: hero-photo-fade 1.05s cubic-bezier(0.22, 1, 0.36, 1) both;
   animation-delay: 1.05s;
+  transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero__photo:hover,
+.hero__photo:focus-within {
+  width: var(--hero-photo-hover);
 }
 
 .hero__name {
@@ -622,26 +644,16 @@ html[data-theme="dark"] .theme-toggle__icon--moon {
   border: none;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
   --parallax-y: 0px;
-  transition:
-    transform 0.3s cubic-bezier(0.34, 1.4, 0.64, 1),
-    box-shadow 0.3s ease;
+  transition: box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .hero__photo .avatar {
   transform: translate3d(0, var(--parallax-y), 0);
-  transition: box-shadow 0.3s ease;
 }
 
-.avatar:hover {
-  transform: scale(1.03);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.14);
-}
-
-.hero__photo .avatar:hover {
-  transform: translate3d(0, var(--parallax-y), 0) scale(1.03);
-  transition:
-    transform 0.3s cubic-bezier(0.34, 1.4, 0.64, 1),
-    box-shadow 0.3s ease;
+.hero__photo:hover .avatar,
+.hero__photo:focus-within .avatar {
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.16);
 }
 
 .avatar__image {
@@ -652,11 +664,12 @@ html[data-theme="dark"] .theme-toggle__icon--moon {
   display: block;
   transform: scale(1.1);
   transform-origin: center center;
-  transition: transform 0.3s cubic-bezier(0.34, 1.4, 0.64, 1);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.avatar:hover .avatar__image {
-  transform: scale(1.14);
+.hero__photo:hover .avatar__image,
+.hero__photo:focus-within .avatar__image {
+  transform: scale(1.16);
 }
 
 .hero__name {
@@ -918,7 +931,7 @@ html[data-theme="dark"] .theme-toggle__icon--moon {
   border-bottom: none;
 }
 
-/* Crimson underline — draws left → right when title enters view */
+/* Crimson underline — draws L→R on enter; retracts R→L on exit (delay only on enter) */
 .section__title::after {
   content: "";
   position: absolute;
@@ -929,64 +942,60 @@ html[data-theme="dark"] .theme-toggle__icon--moon {
   background: color-mix(in srgb, var(--color-header) 72%, transparent);
   transform: scaleX(0);
   transform-origin: left center;
-  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.12s;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .section__title.js-title-reveal.is-entering::after,
 .section__title.about-motion.is-playing::after,
 .section__title:not(.js-title-reveal):not(.about-motion)::after {
   transform: scaleX(1);
+  transition-delay: 0.12s;
 }
 
-/* About Me entrance — JS-driven (.about-motion / .is-playing).
-   Keyframes alone failed when prefers-reduced-motion or paint races applied. */
-#about .section__title.about-motion,
-#about .about-line.about-motion {
-  display: block;
+/* About Me entrance — title rises; body sentences fade inline so prose layout stays natural */
+#about .section__title.about-motion {
+  display: inline-block;
   opacity: 0;
+  transform: translate3d(0, 2.75rem, 0);
   will-change: opacity, transform;
   transition:
     opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
     transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-#about .section__title.about-motion {
-  display: inline-block;
-  transform: translate3d(0, 2.75rem, 0);
-}
-
 #about .about-line.about-motion {
-  transform: translate3d(-4.25rem, 0.35rem, 0);
+  display: inline;
+  opacity: 0;
+  will-change: opacity;
+  transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 #about .section__title.about-motion.is-playing,
-#about .about-line.about-motion.is-playing {
+html.js #about .section__title.about-motion.is-playing {
   opacity: 1;
   transform: translate3d(0, 0, 0);
 }
 
-#about .about-line + .about-line {
-  margin-top: 0.35em;
+#about .about-line.about-motion.is-playing,
+html.js #about .about-line.about-motion.is-playing {
+  opacity: 1;
 }
 
-/* Other section titles — keyframe when JS adds .is-entering */
-.section__title.js-title-reveal {
+/* Other section titles — transition so exit mirrors entrance (same duration/easing) */
+.section__title.js-title-reveal,
+.exp-group__title.js-title-reveal {
   opacity: 0;
+  transform: translate3d(0, 1.75rem, 0);
+  will-change: opacity, transform;
+  transition:
+    opacity 1.15s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.15s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.section__title.js-title-reveal.is-entering {
-  animation: about-title-rise 1.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes about-title-rise {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 1.75rem, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
+.section__title.js-title-reveal.is-entering,
+.exp-group__title.js-title-reveal.is-entering {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
 }
 
 .section__body p {
@@ -1014,10 +1023,6 @@ html[data-theme="dark"] .theme-toggle__icon--moon {
 
 #about .section__body > p + p {
   margin-top: var(--space-md);
-}
-
-#about .about-line + .about-line {
-  margin-top: 0.35em;
 }
 
 /* Skills — rise from below; reverse when scrolled past.
@@ -1160,12 +1165,13 @@ html[data-theme="dark"] .theme-toggle__icon--moon {
   background: color-mix(in srgb, var(--color-header) 72%, transparent);
   transform: scaleX(0);
   transform-origin: left center;
-  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.1s;
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .exp-group__title.is-entering::after,
 .exp-group__title:not(.js-title-reveal)::after {
   transform: scaleX(1);
+  transition-delay: 0.1s;
 }
 
 html[data-theme="dark"] .exp-group__title {
@@ -1197,19 +1203,26 @@ html[data-theme="dark"] .exp-group__title {
   padding: 0;
 }
 
-/* Scroll reveal — soft fade + rise from the left (projects, experiences, education) */
+/* Scroll reveal — soft fade + rise from the left (projects, experiences, education).
+   Do not toggle will-change on .in-view — layer promote/demote mid-transition snaps. */
 .project-showcase.js-reveal > li {
   opacity: 0;
   transform: translate3d(-2.75rem, 1.1rem, 0);
   transition:
-    opacity 0.95s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 1.05s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity 0.95s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.05s cubic-bezier(0.22, 1, 0.36, 1);
   transition-delay: var(--reveal-delay, 0s);
 }
 
+html.js .project-showcase.js-reveal > li.in-view,
 .project-showcase.js-reveal > li.in-view {
   opacity: 1;
   transform: translate3d(0, 0, 0);
+}
+
+/* If ever hidden again, drop stagger so exit uses the same transition (no snap). */
+.project-showcase.js-reveal > li:not(.in-view) {
+  transition-delay: 0s;
 }
 
 /* Interests — same fluid reveal, mirrored from the right */
@@ -1217,14 +1230,19 @@ html[data-theme="dark"] .exp-group__title {
   opacity: 0;
   transform: translate3d(2.75rem, 0.85rem, 0);
   transition:
-    opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
   transition-delay: var(--reveal-delay, 0s);
 }
 
+html.js .interest-list.js-reveal > li.in-view,
 .interest-list.js-reveal > li.in-view {
   opacity: 1;
   transform: translate3d(0, 0, 0);
+}
+
+.interest-list.js-reveal > li:not(.in-view) {
+  transition-delay: 0s;
 }
 
 .project-card {
@@ -1689,9 +1707,11 @@ body.is-lightbox-open {
 }
 
 .project-card__tags li:nth-child(7n + 1) .project-tag {
-  background: color-mix(in srgb, var(--color-accent-soft) 55%, #fff);
-  color: color-mix(in srgb, var(--color-accent-soft-text) 62%, var(--color-muted));
-  border-color: color-mix(in srgb, var(--color-accent-soft-border) 45%, transparent);
+  /* Hardcoded light rose wash (same family as sibling colorways) so dark
+     mode keeps a soft pink pill — dark --color-accent-soft would muddy it */
+  background: #f9eef0;
+  color: #8a4550;
+  border-color: color-mix(in srgb, #e0b0b8 55%, transparent);
 }
 
 .project-card__tags li:nth-child(7n + 2) .project-tag {
@@ -2121,9 +2141,9 @@ a.project-link:hover .project-link__icon {
 .edu-course__code.project-tag {
   flex: 0 0 auto;
   font-variant-numeric: tabular-nums;
-  background: color-mix(in srgb, var(--color-accent-soft) 55%, #fff);
-  color: color-mix(in srgb, var(--color-accent-soft-text) 62%, var(--color-muted));
-  border-color: color-mix(in srgb, var(--color-accent-soft-border) 45%, transparent);
+  background: #f9eef0;
+  color: #8a4550;
+  border-color: color-mix(in srgb, #e0b0b8 55%, transparent);
 }
 
 .edu-course__name {
@@ -2193,7 +2213,7 @@ a.project-link:hover .project-link__icon {
 .skill-icons i {
   display: block;
   font-size: 1.85rem;
-  transition: transform 0.2s ease;
+  transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
   pointer-events: none;
 }
 
@@ -2205,7 +2225,7 @@ html[data-theme="dark"] .devicon-github-original {
 .skill-icons li:hover i,
 .skill-icons li.is-active i,
 .skill-icons li:focus-visible i {
-  transform: translateY(-5px);
+  transform: scale(1.18);
 }
 
 /* Tooltip: hover (desktop) + tap/focus (mobile & keyboard) */
@@ -2272,7 +2292,7 @@ a.project-link {
     box-shadow 0.25s ease,
     background 0.2s ease,
     border-color 0.2s ease,
-    opacity 0.25s ease;
+    filter 0.25s ease;
 }
 
 .project-card:hover {
@@ -2286,17 +2306,13 @@ a.project-link {
   color: var(--color-header);
 }
 
-/* Staggered depth — hovered card lifts; neighbors dim ~5% */
-.section--projects .project-showcase:has(.project-card:hover) > li {
-  opacity: 0.95;
-  transition: opacity 0.28s ease;
-}
-
-.section--projects .project-showcase > li:has(.project-card:hover) {
-  opacity: 1;
+/* Sibling dim on the card via filter — never touch reveal `li` opacity/transform */
+.section--projects .project-showcase:has(.project-card:hover) > li .project-card {
+  filter: brightness(0.94);
 }
 
 .section--projects .project-showcase > li:has(.project-card:hover) .project-card {
+  filter: none;
   transform: translateY(-5px) scale(1.012);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
   z-index: 1;
@@ -2621,6 +2637,26 @@ a.project-link {
   outline: none;
 }
 
+/* Safety net: never leave entrance content permanently invisible */
+html.entrance-fallback .site-logo,
+html.entrance-fallback .site-nav li,
+html.entrance-fallback .header-actions,
+html.entrance-fallback .hero__photo,
+html.entrance-fallback .hero__name,
+html.entrance-fallback .hero__meta,
+html.entrance-fallback .hero__intro .social,
+html.entrance-fallback .hero__aside,
+html.entrance-fallback #about .about-motion,
+html.entrance-fallback .project-showcase.js-reveal > li,
+html.entrance-fallback .interest-list.js-reveal > li,
+html.entrance-fallback .skill-icons.js-reveal > li,
+html.entrance-fallback .section__title.js-title-reveal,
+html.entrance-fallback .exp-group__title.js-title-reveal {
+  opacity: 1 !important;
+  transform: none !important;
+  animation: none !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .site-header {
     transition: none;
@@ -2662,23 +2698,30 @@ a.project-link {
   .project-card__title,
   .social__link,
   a.project-link,
+  .hero__photo,
   .avatar,
   .avatar__image {
     transition: none;
   }
 
-  .avatar:hover {
-    transform: none;
+  .hero__photo:hover,
+  .hero__photo:focus-within {
+    width: var(--hero-photo-size);
+  }
+
+  .hero__photo:hover .avatar,
+  .hero__photo:focus-within .avatar {
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
   }
 
   .hero__photo .avatar,
-  .hero__photo .avatar:hover {
+  .hero__photo:hover .avatar,
+  .hero__photo:focus-within .avatar {
     transform: none;
-    transition: none;
   }
 
-  .avatar:hover .avatar__image {
+  .hero__photo:hover .avatar__image,
+  .hero__photo:focus-within .avatar__image {
     transform: scale(1.1);
   }
 
@@ -2693,8 +2736,8 @@ a.project-link {
     transform: none;
   }
 
-  .section--projects .project-showcase:has(.project-card:hover) > li {
-    opacity: 1;
+  .section--projects .project-showcase:has(.project-card:hover) > li .project-card {
+    filter: none;
   }
 
   .skill-icons i {
@@ -2704,7 +2747,9 @@ a.project-link {
   .project-showcase.js-reveal > li,
   .interest-list.js-reveal > li,
   .section__title.js-title-reveal,
-  .skill-icons.js-reveal > li {
+  .exp-group__title.js-title-reveal,
+  .skill-icons.js-reveal > li,
+  #about .about-motion {
     opacity: 1;
     transform: none;
     transition: none;
@@ -2749,14 +2794,15 @@ a.project-link {
 /* Responsive */
 @media (max-width: 960px) {
   .hero__grid {
-    grid-template-columns: minmax(0, 11.5rem) minmax(0, 1fr);
+    grid-template-columns: auto minmax(0, 1fr);
     grid-template-rows: auto auto;
     gap: var(--space-md) var(--space-lg);
   }
 
   .hero__photo {
     grid-row: 1 / span 2;
-    max-width: 12rem;
+    --hero-photo-size: 11.5rem;
+    --hero-photo-hover: 14.5rem;
   }
 
   .hero__aside {
@@ -2843,8 +2889,8 @@ a.project-link {
   .hero__photo {
     grid-row: auto;
     justify-self: center;
-    max-width: 11rem;
-    width: 100%;
+    --hero-photo-size: 11rem;
+    --hero-photo-hover: 13rem;
   }
 
   .hero__intro,
@@ -2882,12 +2928,7 @@ a.project-link {
     transform: translate3d(0, 2rem, 0);
   }
 
-  #about .about-line.about-motion {
-    transform: translate3d(-2.5rem, 0.25rem, 0);
-  }
-
-  #about .section__title.about-motion.is-playing,
-  #about .about-line.about-motion.is-playing {
+  #about .section__title.about-motion.is-playing {
     transform: translate3d(0, 0, 0);
   }
 
@@ -2991,7 +3032,8 @@ a.project-link {
   }
 
   .hero__photo {
-    max-width: 9.5rem;
+    --hero-photo-size: 9.5rem;
+    --hero-photo-hover: 11.25rem;
   }
 
   .hero__name {

@@ -7,13 +7,15 @@
     <title>Michael Liu</title>
     <script>
       (function () {
+        var root = document.documentElement;
+        root.classList.add("js");
         try {
           var stored = localStorage.getItem("theme");
           var dark =
             stored === "dark" ||
             (!stored &&
               window.matchMedia("(prefers-color-scheme: dark)").matches);
-          if (dark) document.documentElement.setAttribute("data-theme", "dark");
+          if (dark) root.setAttribute("data-theme", "dark");
         } catch (e) {}
         try {
           if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -21,15 +23,102 @@
           } else {
             var wipeDir = sessionStorage.getItem("page-wipe-dir");
             if (wipeDir === "forward" || wipeDir === "back") {
-              document.documentElement.classList.add(
-                "page-wipe-pending",
-                "page-wipe-" + wipeDir
-              );
+              root.classList.add("page-wipe-pending", "page-wipe-" + wipeDir);
             }
           }
         } catch (e) {}
+        /* If main.js never runs, don't leave entrance content blank forever */
+        window.setTimeout(function () {
+          if (!root.classList.contains("entrance-ready")) {
+            root.classList.add("entrance-fallback");
+          }
+        }, 1600);
       })();
     </script>
+    <style id="entrance-critical">
+      /* Hide only until reveal classes/animations apply — never fight .in-view / .is-playing */
+      html.js .site-logo,
+      html.js .site-nav li,
+      html.js .header-actions,
+      html.js .hero__photo,
+      html.js .hero__name,
+      html.js .hero__meta,
+      html.js .hero__intro .social,
+      html.js .hero__aside,
+      html.js #about .about-motion:not(.is-playing),
+      html.js .project-showcase.js-reveal > li:not(.in-view),
+      html.js .interest-list.js-reveal > li:not(.in-view),
+      html.js .skill-icons.js-reveal:not(.in-view) > li,
+      html.js .section__title.js-title-reveal:not(.is-entering),
+      html.js .exp-group__title.js-title-reveal:not(.is-entering) {
+        opacity: 0;
+      }
+      /* Match stylesheet transitions so first paint → .in-view never snaps */
+      html.js .project-showcase.js-reveal > li,
+      html.js .interest-list.js-reveal > li {
+        transition:
+          opacity 0.95s cubic-bezier(0.22, 1, 0.36, 1),
+          transform 1.05s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      html.js.entrance-fallback .site-logo,
+      html.js.entrance-fallback .site-nav li,
+      html.js.entrance-fallback .header-actions,
+      html.js.entrance-fallback .hero__photo,
+      html.js.entrance-fallback .hero__name,
+      html.js.entrance-fallback .hero__meta,
+      html.js.entrance-fallback .hero__intro .social,
+      html.js.entrance-fallback .hero__aside,
+      html.js.entrance-fallback #about .about-motion,
+      html.js.entrance-fallback .project-showcase.js-reveal > li,
+      html.js.entrance-fallback .interest-list.js-reveal > li,
+      html.js.entrance-fallback .skill-icons.js-reveal > li,
+      html.js.entrance-fallback .section__title.js-title-reveal,
+      html.js.entrance-fallback .exp-group__title.js-title-reveal {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html.js .site-logo,
+        html.js .site-nav li,
+        html.js .header-actions,
+        html.js .hero__photo,
+        html.js .hero__name,
+        html.js .hero__meta,
+        html.js .hero__intro .social,
+        html.js .hero__aside,
+        html.js #about .about-motion,
+        html.js .project-showcase.js-reveal > li,
+        html.js .interest-list.js-reveal > li,
+        html.js .skill-icons.js-reveal > li,
+        html.js .section__title.js-title-reveal,
+        html.js .exp-group__title.js-title-reveal {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      }
+    </style>
+    <noscript>
+      <style>
+        .site-logo,
+        .site-nav li,
+        .header-actions,
+        .hero__photo,
+        .hero__name,
+        .hero__meta,
+        .hero__intro .social,
+        .hero__aside,
+        #about .about-motion,
+        .project-showcase.js-reveal > li,
+        .interest-list.js-reveal > li,
+        .skill-icons.js-reveal > li,
+        .section__title.js-title-reveal,
+        .exp-group__title.js-title-reveal {
+          opacity: 1 !important;
+          transform: none !important;
+          animation: none !important;
+        }
+      </style>
+    </noscript>
     <link rel="icon" type="image/gif" href="assets/cs.gif" />
     <link rel="stylesheet" href="assets/css/styles.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -229,36 +318,45 @@
 
       <div class="content-wrap">
         <section class="section js-reveal" id="about" aria-labelledby="about-heading">
-          <h2 id="about-heading" class="section__title">About Me</h2>
+          <h2 id="about-heading" class="section__title about-motion">About Me</h2>
           <div class="section__body">
             <p>
-              <span class="about-line"
+              <span class="about-line about-motion"
                 >My name is Michael Liu, I am an undergraduate studying computer science at
                 <strong>Carnegie Mellon University</strong>.</span
               >
-              <span class="about-line"
-                >I am particularly interested in
+              <span class="about-line about-motion"
+                > I am particularly interested in
                 <strong>computer systems</strong>, <strong>competitive programming</strong>, and building
                 <strong>autonomous systems</strong>.</span
               >
-              <span class="about-line"
-                >Outside of computer science, I fence (competitively for about a decade now), enjoy
+              <span class="about-line about-motion"
+                > Outside of computer science, I fence (competitively for about a decade now), enjoy
                 spending time with friends and family, and embark on projects that challenge me.</span
               >
             </p>
 
             <p>
-              <span class="about-line"
+              <span class="about-line about-motion"
                 >Currently, I am a <strong>research assistant</strong> in the robotics department at
-                Carnegie Mellon University, a <strong>web developer</strong> for
+                Carnegie Mellon University,</span
+              >
+              <span class="about-line about-motion"
+                > a <strong>web developer</strong> for
                 <a href="https://scottylabs.org" target="_blank" rel="noopener noreferrer"
                   ><strong>ScottyLabs</strong></a
                 >
                 as part of the tech team for
                 <a href="https://cmueats.com" target="_blank" rel="noopener noreferrer"
                   ><strong>CMUEats.com</strong></a
-                >, and a <strong>teaching assistant</strong> for CMU's
+                >,</span
+              >
+              <span class="about-line about-motion"
+                > and a <strong>teaching assistant</strong> for CMU's
                 <strong>Introduction to Computer Science</strong> course.</span
+              >
+              <span class="about-line about-motion"
+                > Thanks for checking out my website!</span
               >
             </p>
 
@@ -289,7 +387,7 @@
         </section>
 
         <section class="section section--projects" id="projects" aria-labelledby="projects-heading">
-          <h2 id="projects-heading" class="section__title">Selected Projects</h2>
+          <h2 id="projects-heading" class="section__title js-title-reveal">Selected Projects</h2>
           <div class="section__body">
             <p class="projects-intro">
               These are some of my projects and research so far.
@@ -1098,7 +1196,7 @@
         </section>
 
         <section class="section" id="news" aria-labelledby="news-heading">
-          <h2 id="news-heading" class="section__title">Recent News</h2>
+          <h2 id="news-heading" class="section__title js-title-reveal">Recent News</h2>
           <ol class="news-timeline" aria-label="News and milestones">
             <li class="news-timeline__item">
               <time class="news-timeline__date" datetime="2025-08">Aug 2025</time>

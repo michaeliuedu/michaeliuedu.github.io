@@ -1,9 +1,14 @@
 (function () {
+  document.documentElement.classList.add("entrance-ready");
+
   var themeToggle = document.getElementById("theme-toggle");
   if (themeToggle) {
     var reduceThemeMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     );
+    var themeBusy = false;
+    var THEME_ANIM_MS = 650;
+    var THEME_SAFETY_MS = 900;
 
     var getTheme = function () {
       return document.documentElement.getAttribute("data-theme") === "dark"
@@ -28,16 +33,21 @@
 
     applyTheme(getTheme());
 
+    var coverRadiusAt = function (x, y) {
+      /* Buffer past far corner so the circle fully covers before cleanup */
+      return Math.ceil(
+        Math.hypot(
+          Math.max(x, window.innerWidth - x),
+          Math.max(y, window.innerHeight - y)
+        ) * 1.15
+      );
+    };
+
     var splashReveal = function (x, y, nextTheme, onDone) {
       var overlay = document.createElement("div");
       overlay.className = "theme-splash";
       overlay.setAttribute("aria-hidden", "true");
-      var maxRadius = Math.ceil(
-        Math.hypot(
-          Math.max(x, window.innerWidth - x),
-          Math.max(y, window.innerHeight - y)
-        )
-      );
+      var maxRadius = coverRadiusAt(x, y);
       overlay.style.setProperty("--splash-x", x + "px");
       overlay.style.setProperty("--splash-y", y + "px");
       overlay.style.setProperty("--splash-r", maxRadius + "px");
@@ -47,6 +57,8 @@
       );
       document.body.appendChild(overlay);
 
+      /* Force layout + double rAF so first-run transitions always paint */
+      void overlay.offsetWidth;
       window.requestAnimationFrame(function () {
         window.requestAnimationFrame(function () {
           overlay.classList.add("is-expanding");
@@ -58,11 +70,25 @@
         if (finished) return;
         finished = true;
         onDone();
-        if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+        /* Hold full cover for 2 frames after theme swap to avoid edge flash */
+        window.requestAnimationFrame(function () {
+          window.requestAnimationFrame(function () {
+            if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+          });
+        });
       };
 
-      overlay.addEventListener("transitionend", finish, { once: true });
-      window.setTimeout(finish, 650);
+      overlay.addEventListener(
+        "transitionend",
+        function (event) {
+          if (event.target !== overlay) return;
+          if (event.propertyName && event.propertyName !== "clip-path") return;
+          finish();
+        },
+        { once: true }
+      );
+      /* Safety after transition duration — never remove early */
+      window.setTimeout(finish, THEME_SAFETY_MS);
     };
 
     var circleFromClick = function (event) {
@@ -78,7 +104,88 @@
       return { x: x, y: y };
     };
 
+    var runViewTransition = function (nextTheme, point) {
+      var root = document.documentElement;
+      var coverRadius = coverRadiusAt(point.x, point.y);
+      var released = false;
+
+      var release = function () {
+        if (released) return;
+        released = true;
+        root.classList.remove("theme-transitioning");
+        themeBusy = false;
+      };
+
+      root.classList.add("theme-transitioning");
+
+      var transition;
+      try {
+        transition = document.startViewTransition(function () {
+          applyTheme(nextTheme);
+        });
+      } catch (err) {
+        applyTheme(nextTheme);
+        release();
+        return;
+      }
+
+      /* Always clear after animation settles — never earlier than THEME_ANIM_MS */
+      var holdUntil = Date.now() + THEME_ANIM_MS;
+      var finishWhenReady = function () {
+        var wait = Math.max(0, holdUntil - Date.now());
+        window.setTimeout(release, wait + 40);
+      };
+
+      if (transition.finished && typeof transition.finished.then === "function") {
+        transition.finished.then(finishWhenReady).catch(function () {
+          applyTheme(nextTheme);
+          release();
+        });
+      } else {
+        window.setTimeout(release, THEME_SAFETY_MS);
+      }
+
+      /* Hard safety so a hung VT never locks the toggle */
+      window.setTimeout(release, THEME_SAFETY_MS + 200);
+
+      transition.ready
+        .then(function () {
+          var anim = root.animate(
+            [
+              {
+                clipPath:
+                  "circle(0px at " + point.x + "px " + point.y + "px)",
+              },
+              {
+                clipPath:
+                  "circle(" +
+                  coverRadius +
+                  "px at " +
+                  point.x +
+                  "px " +
+                  point.y +
+                  "px)",
+              },
+            ],
+            {
+              duration: THEME_ANIM_MS,
+              easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+              fill: "forwards",
+              pseudoElement: "::view-transition-new(root)",
+            }
+          );
+          if (anim && typeof anim.finished !== "undefined") {
+            anim.finished.catch(function () {});
+          }
+        })
+        .catch(function () {
+          applyTheme(nextTheme);
+          release();
+        });
+    };
+
     themeToggle.addEventListener("click", function (event) {
+      if (themeBusy) return;
       var nextTheme = getTheme() === "dark" ? "light" : "dark";
       var point = circleFromClick(event);
 
@@ -87,62 +194,16 @@
         return;
       }
 
+      themeBusy = true;
+
       if (typeof document.startViewTransition === "function") {
-        var root = document.documentElement;
-        var endRadius = Math.hypot(
-          Math.max(point.x, window.innerWidth - point.x),
-          Math.max(point.y, window.innerHeight - point.y)
-        );
-
-        root.classList.add("theme-transitioning");
-        var transition = document.startViewTransition(function () {
-          applyTheme(nextTheme);
-        });
-
-        var clearThemeClass = function () {
-          root.classList.remove("theme-transitioning");
-        };
-        if (transition.finished && typeof transition.finished.then === "function") {
-          transition.finished.then(clearThemeClass).catch(clearThemeClass);
-        } else {
-          window.setTimeout(clearThemeClass, 700);
-        }
-
-        transition.ready
-          .then(function () {
-            root.animate(
-              [
-                {
-                  clipPath:
-                    "circle(0px at " + point.x + "px " + point.y + "px)",
-                },
-                {
-                  clipPath:
-                    "circle(" +
-                    endRadius +
-                    "px at " +
-                    point.x +
-                    "px " +
-                    point.y +
-                    "px)",
-                },
-              ],
-              {
-                duration: 560,
-                easing: "cubic-bezier(0.22, 1, 0.36, 1)",
-                pseudoElement: "::view-transition-new(root)",
-              }
-            );
-          })
-          .catch(function () {
-            clearThemeClass();
-            applyTheme(nextTheme);
-          });
+        runViewTransition(nextTheme, point);
         return;
       }
 
       splashReveal(point.x, point.y, nextTheme, function () {
         applyTheme(nextTheme);
+        themeBusy = false;
       });
     });
   }
@@ -273,6 +334,8 @@
 
     if (opts.freeze) {
       nav.setAttribute("data-nav-freeze", "true");
+    } else {
+      nav.removeAttribute("data-nav-freeze");
     }
 
     document.dispatchEvent(
@@ -321,19 +384,25 @@
       var left = linkRect.left - navRect.left;
       var top = linkRect.bottom - navRect.top - 1;
       var width = linkRect.width;
+      var nextTransform = "translate3d(" + left + "px, " + top + "px, 0)";
 
       if (immediate || reduceMotion.matches || !placed) {
-        var prev = indicator.style.transition;
         indicator.style.transition = "none";
         indicator.style.width = width + "px";
-        indicator.style.transform =
-          "translate3d(" + left + "px, " + top + "px, 0)";
+        indicator.style.transform = nextTransform;
         void indicator.offsetWidth;
-        indicator.style.transition = prev;
+        indicator.style.transition = "";
       } else {
+        /* Restart from the live computed position so leave/click never freezes mid-slide */
+        var computed = window.getComputedStyle(indicator).transform;
+        if (computed && computed !== "none") {
+          indicator.style.transition = "none";
+          indicator.style.transform = computed;
+          void indicator.offsetWidth;
+          indicator.style.transition = "";
+        }
         indicator.style.width = width + "px";
-        indicator.style.transform =
-          "translate3d(" + left + "px, " + top + "px, 0)";
+        indicator.style.transform = nextTransform;
       }
 
       if (placed) indicator.classList.add("is-ready");
@@ -343,27 +412,43 @@
       moveTo(hoverLink || currentLink(), immediate);
     };
 
+    var clearHoverAndSync = function (immediate) {
+      hoverLink = null;
+      sync(!!immediate);
+    };
+
     document.addEventListener("nav:currentchange", function (event) {
       if (event.detail && event.detail.key) {
         hoverLink = null;
-        placed = true;
       }
-      if (hoverLink) return;
       var immediate = event.detail && event.detail.immediate;
+      /* Always sync: hover preview wins while hovering; otherwise follow aria-current */
       sync(!!immediate);
     });
 
     nav.querySelectorAll("a[href]").forEach(function (link) {
-      link.addEventListener("mouseenter", function () {
+      link.addEventListener("pointerenter", function () {
         if (mobileQuery.matches || nav.hasAttribute("data-nav-freeze")) return;
         hoverLink = link;
         sync(false);
       });
+
+      link.addEventListener("pointerdown", function () {
+        /* Commit underline to the clicked tab immediately; cancel hover preview */
+        hoverLink = null;
+        if (mobileQuery.matches) return;
+        moveTo(link, false);
+      });
     });
 
-    nav.addEventListener("mouseleave", function () {
-      hoverLink = null;
-      sync(false);
+    nav.addEventListener("pointerleave", function () {
+      if (nav.hasAttribute("data-nav-freeze")) {
+        /* Stay on the frozen (destination) tab — don't animate elsewhere mid-nav */
+        hoverLink = null;
+        sync(false);
+        return;
+      }
+      clearHoverAndSync(false);
     });
 
     window.addEventListener(
@@ -765,8 +850,11 @@
     return window.innerHeight || document.documentElement.clientHeight;
   };
 
-  var isAboveViewportBottom = function (item) {
-    return item.getBoundingClientRect().top < viewportH();
+  var isInitiallyVisible = function (item) {
+    /* Soft on-load check: anything already in the viewport starts early.
+       Below-fold cards still go through IO for a visible enter. */
+    var rect = item.getBoundingClientRect();
+    return rect.top < viewportH() && rect.bottom > 0;
   };
 
   var observeRevealItems = function (items, options) {
@@ -776,6 +864,8 @@
     var threshold = opts.threshold != null ? opts.threshold : 0.12;
     var rootMargin = opts.rootMargin || "0px 0px -8% 0px";
     var once = !!opts.once;
+    /* Debounce hide so edge flicker doesn't snap; enter stays immediate. */
+    var hideDelay = opts.hideDelay != null ? opts.hideDelay : 140;
 
     if (prefersReduce.matches || !("IntersectionObserver" in window)) {
       items.forEach(reveal);
@@ -786,22 +876,95 @@
     var belowFoldItems = [];
 
     items.forEach(function (item) {
-      if (isAboveViewportBottom(item)) {
+      if (isInitiallyVisible(item)) {
         visibleItems.push(item);
       } else {
         belowFoldItems.push(item);
       }
     });
 
+    var pendingEnter = [];
+    var enterFlushScheduled = false;
+    var hideTimers = new WeakMap();
+
+    var cancelHide = function (item) {
+      var timer = hideTimers.get(item);
+      if (timer) {
+        window.clearTimeout(timer);
+        hideTimers.delete(item);
+      }
+    };
+
+    var flushEnter = function () {
+      enterFlushScheduled = false;
+      var batch = pendingEnter.splice(0, pendingEnter.length);
+      if (!batch.length) return;
+
+      /* Force opacity:0 / offset transform to paint before .in-view */
+      batch.forEach(function (item) {
+        void item.offsetWidth;
+      });
+
+      batch.forEach(function (item, index) {
+        if (item.classList.contains("in-view")) return;
+        if (batch.length > 1) {
+          item.style.setProperty(
+            "--reveal-delay",
+            String(index * stagger) + "s"
+          );
+        } else {
+          item.style.removeProperty("--reveal-delay");
+        }
+        reveal(item);
+        if (once) scrollObserver.unobserve(item);
+      });
+
+      if (batch.length > 1) {
+        window.setTimeout(function () {
+          batch.forEach(function (item) {
+            item.style.removeProperty("--reveal-delay");
+          });
+        }, batch.length * Math.round(stagger * 1000) + 1200);
+      }
+    };
+
+    var scheduleHide = function (item) {
+      cancelHide(item);
+      if (hideDelay <= 0) {
+        hide(item);
+        return;
+      }
+      hideTimers.set(
+        item,
+        window.setTimeout(function () {
+          hideTimers.delete(item);
+          if (!item.classList.contains("in-view")) return;
+          hide(item);
+        }, hideDelay)
+      );
+    };
+
     var scrollObserver = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
-            entry.target.style.removeProperty("--reveal-delay");
-            reveal(entry.target);
-            if (once) scrollObserver.unobserve(entry.target);
+            cancelHide(entry.target);
+            if (entry.target.classList.contains("in-view")) {
+              if (once) scrollObserver.unobserve(entry.target);
+              return;
+            }
+            pendingEnter.push(entry.target);
+            if (!enterFlushScheduled) {
+              enterFlushScheduled = true;
+              afterPaint(flushEnter);
+            }
           } else if (!once) {
-            hide(entry.target);
+            /* Drop from pending enter so afterPaint can't reveal a leaving item */
+            var pendingIdx = pendingEnter.indexOf(entry.target);
+            if (pendingIdx !== -1) pendingEnter.splice(pendingIdx, 1);
+            if (entry.target.classList.contains("in-view")) {
+              scheduleHide(entry.target);
+            }
           }
         });
       },
@@ -825,7 +988,16 @@
         reveal(item);
       });
 
-      if (once) return;
+      if (once) {
+        var clearDelayMs =
+          visibleItems.length * Math.round(stagger * 1000) + 1200;
+        window.setTimeout(function () {
+          visibleItems.forEach(function (item) {
+            item.style.removeProperty("--reveal-delay");
+          });
+        }, clearDelayMs);
+        return;
+      }
 
       var entranceMs = visibleItems.length * Math.round(stagger * 1000) + 700;
       window.setTimeout(function () {
@@ -907,8 +1079,16 @@
   );
   revealLists.forEach(function (list) {
     list.classList.add("js-reveal");
+    /* Early enter + replay on scroll-back. Snap avoided via hide debounce
+       (hysteresis), not by delaying the enter trigger. */
     observeRevealItems(
-      Array.prototype.slice.call(list.querySelectorAll(":scope > li"))
+      Array.prototype.slice.call(list.querySelectorAll(":scope > li")),
+      {
+        once: false,
+        threshold: 0.05,
+        rootMargin: "12% 0px -4% 0px",
+        hideDelay: 160,
+      }
     );
   });
 
@@ -1021,12 +1201,8 @@
             if (entry.isIntersecting) {
               title.classList.add("is-entering");
             } else {
+              /* CSS transitions reverse opacity/rise + underline; no keyframe reset */
               title.classList.remove("is-entering");
-              if (title.classList.contains("section__title")) {
-                title.style.animation = "none";
-                void title.offsetWidth;
-                title.style.animation = "";
-              }
             }
           });
         },
@@ -1370,8 +1546,16 @@
   /* 6. Directional crimson page wipe — Home → Experience → Education */
   (function initPageTransitions() {
     var WIPE_KEY = "page-wipe-dir";
-    var WIPE_MS = 420;
+    /* Must match .page-wipe.is-animating transition duration in styles.css */
+    var WIPE_MS = 400;
+    /* Fallback only after transitionend should have fired */
+    var WIPE_FALLBACK_MS = WIPE_MS + 120;
+    /* Stuck-nav cleanup: longer than cover wipe + navigate handoff */
+    var WIPE_SAFETY_MS = WIPE_MS + 2000;
     var navigating = false;
+    var activeOverlay = null;
+    var safetyTimer = null;
+    var wipeFallbackTimer = null;
 
     var pageIndexFromPath = function (pathname) {
       var file = (pathname.split("/").pop() || "").toLowerCase();
@@ -1394,6 +1578,27 @@
       );
     };
 
+    var removeAllWipes = function () {
+      if (wipeFallbackTimer) {
+        window.clearTimeout(wipeFallbackTimer);
+        wipeFallbackTimer = null;
+      }
+      document.querySelectorAll(".page-wipe").forEach(function (el) {
+        if (el.parentNode) el.parentNode.removeChild(el);
+      });
+      activeOverlay = null;
+    };
+
+    var unfreezeNav = function () {
+      if (nav) nav.removeAttribute("data-nav-freeze");
+    };
+
+    var restoreNavFromLocation = function () {
+      unfreezeNav();
+      var key = navKeyFromUrl(window.location);
+      if (key) setNavCurrentKey(key, { immediate: true, freeze: false });
+    };
+
     var createWipe = function (direction, phase) {
       var overlay = document.createElement("div");
       overlay.className =
@@ -1408,12 +1613,20 @@
       var onDone = opts.onDone;
 
       if (!overlay.parentNode) document.body.appendChild(overlay);
+      activeOverlay = overlay;
 
       var finished = false;
       var finish = function () {
         if (finished) return;
         finished = true;
+        if (wipeFallbackTimer) {
+          window.clearTimeout(wipeFallbackTimer);
+          wipeFallbackTimer = null;
+        }
+        /* Only remove after transition completes (or fallback). keep:true
+           holds the cover through navigation handoff. */
         if (!keep && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+        if (activeOverlay === overlay && !keep) activeOverlay = null;
         if (typeof onDone === "function") onDone();
       };
 
@@ -1431,11 +1644,12 @@
 
       window.requestAnimationFrame(function () {
         window.requestAnimationFrame(function () {
+          if (finished) return;
           overlay.classList.add("is-animating", "is-active");
         });
       });
 
-      window.setTimeout(finish, WIPE_MS + 80);
+      wipeFallbackTimer = window.setTimeout(finish, WIPE_FALLBACK_MS);
     };
 
     var resolveNavTarget = function (anchor) {
@@ -1463,6 +1677,21 @@
       if (!direction) return null;
 
       return { href: url.href, direction: direction };
+    };
+
+    var abortNavigation = function () {
+      navigating = false;
+      if (safetyTimer) {
+        window.clearTimeout(safetyTimer);
+        safetyTimer = null;
+      }
+      removeAllWipes();
+      clearWipePending();
+      try {
+        sessionStorage.removeItem(WIPE_KEY);
+        sessionStorage.removeItem(NAV_PENDING_KEY);
+      } catch (e) {}
+      restoreNavFromLocation();
     };
 
     /* Entering page: crimson already covering via html.page-wipe-pending — wipe out */
@@ -1512,7 +1741,8 @@
         try {
           sessionStorage.setItem(NAV_PENDING_KEY, navKey);
         } catch (e) {}
-        setNavCurrentKey(navKey, { freeze: true, immediate: false });
+        /* Snap underline to destination — freeze must not abort the wipe */
+        setNavCurrentKey(navKey, { freeze: true, immediate: true });
       }
 
       if (prefersReduce.matches) {
@@ -1524,6 +1754,7 @@
         sessionStorage.setItem(WIPE_KEY, target.direction);
       } catch (e) {}
 
+      removeAllWipes();
       var overlay = createWipe(target.direction, "in");
       runWipe(overlay, {
         keep: true,
@@ -1531,6 +1762,52 @@
           window.location.href = target.href;
         },
       });
+
+      /* If navigation never leaves this page, clean up stuck wipe + frozen tab */
+      if (safetyTimer) window.clearTimeout(safetyTimer);
+      safetyTimer = window.setTimeout(function () {
+        if (!navigating) return;
+        if (document.visibilityState === "hidden") return;
+        abortNavigation();
+      }, WIPE_SAFETY_MS);
+    });
+
+    window.addEventListener("pagehide", function () {
+      if (safetyTimer) {
+        window.clearTimeout(safetyTimer);
+        safetyTimer = null;
+      }
+      /* Intentional outbound wipe: keep the cover through unload / bfcache
+         snapshot. pageshow(persisted) strips stale overlays on restore.
+         Only clear when this isn't an in-progress nav wipe. */
+      if (!navigating) {
+        removeAllWipes();
+        clearWipePending();
+      }
+    });
+
+    window.addEventListener("pageshow", function (event) {
+      navigating = false;
+      if (safetyTimer) {
+        window.clearTimeout(safetyTimer);
+        safetyTimer = null;
+      }
+
+      /* bfcache restore may include a leftover cover — remove STALE overlays.
+         Normal load must NOT kill the intentional enter wipe from playEnterWipe
+         (pageshow fires after main.js starts that animation). */
+      if (event.persisted) {
+        removeAllWipes();
+        clearWipePending();
+      }
+
+      var wasFrozen = !!(nav && nav.hasAttribute("data-nav-freeze"));
+      unfreezeNav();
+      /* Only re-sync current tab after bfcache restore or a stuck freeze */
+      if (event.persisted || wasFrozen) {
+        var key = navKeyFromUrl(window.location);
+        if (key) setNavCurrentKey(key, { immediate: true, freeze: false });
+      }
     });
   })();
 

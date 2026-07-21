@@ -7,13 +7,15 @@
     <title>Michael Liu</title>
     <script>
       (function () {
+        var root = document.documentElement;
+        root.classList.add("js");
         try {
           var stored = localStorage.getItem("theme");
           var dark =
             stored === "dark" ||
             (!stored &&
               window.matchMedia("(prefers-color-scheme: dark)").matches);
-          if (dark) document.documentElement.setAttribute("data-theme", "dark");
+          if (dark) root.setAttribute("data-theme", "dark");
         } catch (e) {}
         try {
           if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -21,15 +23,66 @@
           } else {
             var wipeDir = sessionStorage.getItem("page-wipe-dir");
             if (wipeDir === "forward" || wipeDir === "back") {
-              document.documentElement.classList.add(
-                "page-wipe-pending",
-                "page-wipe-" + wipeDir
-              );
+              root.classList.add("page-wipe-pending", "page-wipe-" + wipeDir);
             }
           }
         } catch (e) {}
+        window.setTimeout(function () {
+          if (!root.classList.contains("entrance-ready")) {
+            root.classList.add("entrance-fallback");
+          }
+        }, 1600);
       })();
     </script>
+    <style id="entrance-critical">
+      html.js .site-logo,
+      html.js .site-nav li,
+      html.js .header-actions,
+      html.js .project-showcase.js-reveal > li:not(.in-view),
+      html.js .section__title.js-title-reveal:not(.is-entering),
+      html.js .exp-group__title.js-title-reveal:not(.is-entering) {
+        opacity: 0;
+      }
+      html.js .project-showcase.js-reveal > li {
+        transition:
+          opacity 0.95s cubic-bezier(0.22, 1, 0.36, 1),
+          transform 1.05s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      html.js.entrance-fallback .site-logo,
+      html.js.entrance-fallback .site-nav li,
+      html.js.entrance-fallback .header-actions,
+      html.js.entrance-fallback .project-showcase.js-reveal > li,
+      html.js.entrance-fallback .section__title.js-title-reveal,
+      html.js.entrance-fallback .exp-group__title.js-title-reveal {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html.js .site-logo,
+        html.js .site-nav li,
+        html.js .header-actions,
+        html.js .project-showcase.js-reveal > li,
+        html.js .section__title.js-title-reveal,
+        html.js .exp-group__title.js-title-reveal {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      }
+    </style>
+    <noscript>
+      <style>
+        .site-logo,
+        .site-nav li,
+        .header-actions,
+        .project-showcase.js-reveal > li,
+        .section__title.js-title-reveal,
+        .exp-group__title.js-title-reveal {
+          opacity: 1 !important;
+          transform: none !important;
+          animation: none !important;
+        }
+      </style>
+    </noscript>
     <link rel="icon" type="image/gif" href="assets/cs.gif" />
     <link rel="stylesheet" href="assets/css/styles.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -107,14 +160,14 @@
     <main id="main">
       <div class="content-wrap">
         <section class="section" id="experiences" aria-labelledby="experiences-heading">
-          <h2 id="experiences-heading" class="section__title">Experience</h2>
+          <h2 id="experiences-heading" class="section__title js-title-reveal">Experience</h2>
           <div class="section__body">
             <p class="projects-intro">
               Where and how I've been involved.
             </p>
           </div>
 
-          <h3 id="current-experiences-heading" class="exp-group__title">Current</h3>
+          <h3 id="current-experiences-heading" class="exp-group__title js-title-reveal">Current</h3>
           <ol
             class="project-showcase project-showcase--timeline project-showcase--experiences js-reveal"
             aria-labelledby="current-experiences-heading"
@@ -206,7 +259,7 @@
             </li>
           </ol>
 
-          <h3 id="previous-experiences-heading" class="exp-group__title">Previous</h3>
+          <h3 id="previous-experiences-heading" class="exp-group__title js-title-reveal">Previous</h3>
           <ol
             class="project-showcase project-showcase--timeline project-showcase--experiences js-reveal"
             aria-labelledby="previous-experiences-heading"

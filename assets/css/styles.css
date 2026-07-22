@@ -1309,11 +1309,13 @@ html.js .interest-list.js-reveal > li.in-view,
 }
 
 .project-carousel__image {
+  --carousel-img-zoom: 1;
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
   pointer-events: none;
+  transform: scale(var(--carousel-img-zoom));
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform;
 }
@@ -1370,14 +1372,25 @@ html.js .interest-list.js-reveal > li.in-view,
   flex-shrink: 0;
 }
 
-.project-card:hover .project-carousel__btn,
 .project-card:focus-within .project-carousel__btn {
   opacity: 1;
 }
 
-.project-carousel__btn:hover {
-  background: rgba(var(--color-accent-rgb), 0.92);
-  transform: translateY(-50%) scale(1.04);
+@media (hover: hover) and (pointer: fine) {
+  .project-card:hover .project-carousel__btn {
+    opacity: 1;
+  }
+
+  .project-carousel__btn:hover {
+    background: rgba(var(--color-accent-rgb), 0.92);
+    transform: translateY(-50%) scale(1.04);
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .project-carousel__btn {
+    opacity: 1;
+  }
 }
 
 .project-carousel__btn:active {
@@ -1417,9 +1430,20 @@ html.js .interest-list.js-reveal > li.in-view,
   transition: opacity 0.2s ease;
 }
 
-.project-card:hover .project-carousel__dots,
 .project-card:focus-within .project-carousel__dots {
   opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .project-card:hover .project-carousel__dots {
+    opacity: 1;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .project-carousel__dots {
+    opacity: 1;
+  }
 }
 
 .project-carousel__dot {
@@ -1442,8 +1466,10 @@ html.js .interest-list.js-reveal > li.in-view,
   background: #fff;
 }
 
-.project-carousel__dot:hover {
-  background: rgba(255, 255, 255, 0.85);
+@media (hover: hover) and (pointer: fine) {
+  .project-carousel__dot:hover {
+    background: rgba(255, 255, 255, 0.85);
+  }
 }
 
 .project-carousel__dot:focus-visible {
@@ -1462,9 +1488,14 @@ html.js .interest-list.js-reveal > li.in-view,
   transition: background 0.22s ease;
 }
 
-.project-card:hover .project-card__media::after,
 .project-card:focus-within .project-card__media::after {
   background: rgba(18, 18, 18, 0.08);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .project-card:hover .project-card__media::after {
+    background: rgba(18, 18, 18, 0.08);
+  }
 }
 
 /* Project image lightbox */
@@ -1788,72 +1819,13 @@ a.project-link {
     border-color 0.15s ease;
 }
 
-a.project-link:hover {
-  background: var(--color-header);
-  color: #fff;
-  border-color: var(--color-header);
-  transform: translateY(-2px);
-}
-
 a.project-link:focus-visible {
   outline: 2px solid var(--color-link);
   outline-offset: 2px;
 }
 
-a.project-link--github:hover {
-  background: #24292f;
-  color: #fff;
-  border-color: #24292f;
-}
-
-html[data-theme="dark"] a.project-link--github:hover {
-  background: #e6e9ec;
-  color: #12161a;
-  border-color: #e6e9ec;
-}
-
-a.project-link--youtube:hover {
-  background: #e03838;
-  color: #fff;
-  border-color: #e03838;
-}
-
-a.project-link--devpost:hover {
-  background: #1a5568;
-  color: #fff;
-  border-color: #1a5568;
-}
-
-html[data-theme="dark"] a.project-link--devpost:hover {
-  background: #7ec8e3;
-  color: #12161a;
-  border-color: #7ec8e3;
-}
-
-a.project-link--itch:hover {
-  background: #e25a5a;
-  color: #fff;
-  border-color: #e25a5a;
-}
-
 a.project-link--cac {
   background: var(--color-surface);
-}
-
-a.project-link--cac:hover {
-  background: #0b3d91;
-  border-color: #0b3d91;
-  color: #fff;
-}
-
-a.project-link--cac:hover .project-link__logo {
-  filter: brightness(0) invert(1);
-}
-
-a.project-link--external:hover {
-  background: var(--color-header);
-  border-color: var(--color-header);
-  color: #fff;
 }
 
 .project-link__icon {
@@ -1865,8 +1837,70 @@ a.project-link--external:hover {
   transition: opacity 0.15s ease, filter 0.15s ease;
 }
 
-a.project-link:hover .project-link__icon {
-  opacity: 1;
+/* Link hover polish — fine pointer only so first tap navigates on touch */
+@media (hover: hover) and (pointer: fine) {
+  a.project-link:hover {
+    background: var(--color-header);
+    color: #fff;
+    border-color: var(--color-header);
+    transform: translateY(-2px);
+  }
+
+  a.project-link--github:hover {
+    background: #24292f;
+    color: #fff;
+    border-color: #24292f;
+  }
+
+  html[data-theme="dark"] a.project-link--github:hover {
+    background: #e6e9ec;
+    color: #12161a;
+    border-color: #e6e9ec;
+  }
+
+  a.project-link--youtube:hover {
+    background: #e03838;
+    color: #fff;
+    border-color: #e03838;
+  }
+
+  a.project-link--devpost:hover {
+    background: #1a5568;
+    color: #fff;
+    border-color: #1a5568;
+  }
+
+  html[data-theme="dark"] a.project-link--devpost:hover {
+    background: #7ec8e3;
+    color: #12161a;
+    border-color: #7ec8e3;
+  }
+
+  a.project-link--itch:hover {
+    background: #e25a5a;
+    color: #fff;
+    border-color: #e25a5a;
+  }
+
+  a.project-link--cac:hover {
+    background: #0b3d91;
+    border-color: #0b3d91;
+    color: #fff;
+  }
+
+  a.project-link--cac:hover .project-link__logo {
+    filter: brightness(0) invert(1);
+  }
+
+  a.project-link--external:hover {
+    background: var(--color-header);
+    border-color: var(--color-header);
+    color: #fff;
+  }
+
+  a.project-link:hover .project-link__icon {
+    opacity: 1;
+  }
 }
 
 .project-link__logo {
@@ -2281,11 +2315,6 @@ a.project-link {
     background 0.15s ease;
 }
 
-.section--projects .project-card:hover .project-carousel__slide.is-active .project-carousel__image,
-.section--projects .project-card__media:hover .project-carousel__slide.is-active .project-carousel__image {
-  transform: scale(1.04);
-}
-
 .project-card {
   transition:
     transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
@@ -2295,52 +2324,63 @@ a.project-link {
     filter 0.25s ease;
 }
 
-.project-card:hover {
-  transform: translateY(-4px);
-  background: var(--color-surface);
-  border-color: var(--color-border);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
-}
-
-.project-card:hover .project-card__title {
-  color: var(--color-header);
-}
-
-/* Sibling dim on the card via filter — never touch reveal `li` opacity/transform */
-.section--projects .project-showcase:has(.project-card:hover) > li .project-card {
-  filter: brightness(0.94);
-}
-
-.section--projects .project-showcase > li:has(.project-card:hover) .project-card {
-  filter: none;
-  transform: translateY(-5px) scale(1.012);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
-  z-index: 1;
-}
-
-/* Education entry cards (CMU, Coppell) stay static — no hover lift/shadow.
-   Experiences keep the shared .project-card:hover treatment above. */
+/* Education entry cards (CMU, Coppell) stay static — no hover lift/shadow. */
 #education .project-card {
   transition: none;
 }
 
-#education .project-card:hover {
-  transform: none;
-  background: transparent;
-  border-color: transparent;
-  box-shadow: none;
-}
+/*
+  Card / showcase hover motion — fine pointer only.
+  On touch, sticky :hover was eating the first tap (enlarge) before navigate.
+*/
+@media (hover: hover) and (pointer: fine) {
+  .section--projects .project-card:hover .project-carousel__slide.is-active .project-carousel__image,
+  .section--projects .project-card__media:hover .project-carousel__slide.is-active .project-carousel__image {
+    transform: scale(calc(var(--carousel-img-zoom, 1) * 1.04));
+  }
 
-#education .project-card:hover .project-card__title {
-  color: inherit;
-}
+  .project-card:hover {
+    transform: translateY(-4px);
+    background: var(--color-surface);
+    border-color: var(--color-border);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+  }
 
-.section--projects .project-card:hover .project-card__media {
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.1);
-}
+  .project-card:hover .project-card__title {
+    color: var(--color-header);
+  }
 
-.social__link:hover {
-  transform: translateY(-2px);
+  /* Sibling dim on the card via filter — never touch reveal `li` opacity/transform */
+  .section--projects .project-showcase:has(.project-card:hover) > li .project-card {
+    filter: brightness(0.94);
+  }
+
+  .section--projects .project-showcase > li:has(.project-card:hover) .project-card {
+    filter: none;
+    transform: translateY(-5px) scale(1.012);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+  }
+
+  /* Experiences keep the shared .project-card:hover treatment; education stays static. */
+  #education .project-card:hover {
+    transform: none;
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+  }
+
+  #education .project-card:hover .project-card__title {
+    color: inherit;
+  }
+
+  .section--projects .project-card:hover .project-card__media {
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.1);
+  }
+
+  .social__link:hover {
+    transform: translateY(-2px);
+  }
 }
 
 /* News — vertical rail + markers only */
@@ -2731,9 +2771,13 @@ html.entrance-fallback .exp-group__title.js-title-reveal {
   .skill-icons li.is-active i,
   .skill-icons li:focus-visible i,
   .project-card:hover,
-  .section--projects .project-card:hover .project-carousel__slide.is-active .project-carousel__image,
   .section--projects .project-showcase > li:has(.project-card:hover) .project-card {
     transform: none;
+  }
+
+  /* Preserve per-slide crop zoom; only drop the extra hover scale */
+  .section--projects .project-card:hover .project-carousel__slide.is-active .project-carousel__image {
+    transform: scale(var(--carousel-img-zoom, 1));
   }
 
   .section--projects .project-showcase:has(.project-card:hover) > li .project-card {
